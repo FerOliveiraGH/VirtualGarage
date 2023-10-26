@@ -2,33 +2,18 @@ modded class GarageServer
 {
     override void ParkInRequestHandler(PlayerBase player, int id, CarScript car, vector pos)
     {
-        #ifdef GMDEBUG
-        GetGMLogger().LogInfo("ParkInRequestHandler");
-        #endif
-
-        if(!GarageHelpers.CheckifPlayerHasEnoughMoney(player, GetGarageConfig().ParkInCost))
-        {
-        NotificationSystem.SendNotificationToPlayerIdentityExtended(player.GetIdentity(), 2, "Garage", GetGarageConfig().NotEnoughMoney, "Garage/image/CarLogo.paa");
-        return;
-        //not enough money
-        }
-        
-        #ifdef GMDEBUG
-        GetGMLogger().LogInfo(string.Format("MustHaveLock:%1 - SaveLock:%2", GetGarageConfig().VehicleMustHaveLock, GetGarageConfig().SaveVehicleLock)); 
-        #endif
-
         CarScript CarToRemove;
         if(!car)
-        CarToRemove = GarageHelpers.CheckForCarAtPos(pos);
+            CarToRemove = GarageHelpers.CheckForCarAtPos(pos);
         else
-        CarToRemove = car;
+            CarToRemove = car;
 
         if(!car)
         {
-        #ifdef GMDEBUG
-        GetGMLogger().LogInfo("ParkInRequestHandler => car doesnt exist");
-        #endif
-        return;
+            #ifdef GMDEBUG
+            GetGMLogger().LogInfo("ParkInRequestHandler => car doesnt exist");
+            #endif
+            return;
         }
 
         if(GetGarageConfig().VehicleMustHaveLock)
