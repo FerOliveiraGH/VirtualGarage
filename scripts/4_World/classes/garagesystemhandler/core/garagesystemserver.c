@@ -10,6 +10,9 @@ modded class GarageServer
 
         if(!car)
         {
+            #ifdef GMDEBUG
+            GetGMLogger().LogInfo("ParkInRequestHandler => car doesnt exist");
+            #endif
             return;
         }
 
@@ -19,6 +22,9 @@ modded class GarageServer
             if(car.m_CarLockOwner == -1)
             {
             NotificationSystem.SendNotificationToPlayerIdentityExtended(player.GetIdentity(), 2, "Garage", GetGarageConfig().NotRightToPark, "Garage/image/CarLogo.paa");
+            #ifdef GMDEBUG
+            GetGMLogger().LogInfo("ParkInRequestHandler => no lock 1");
+            #endif
             return;
             }
         #else
@@ -26,6 +32,9 @@ modded class GarageServer
             if(!car.m_HasCKAssigned)
             {
                 NotificationSystem.SendNotificationToPlayerIdentityExtended(player.GetIdentity(), 2, "Garage", GetGarageConfig().NotRightToPark, "Garage/image/CarLogo.paa");
+                #ifdef GMDEBUG
+                GetGMLogger().LogInfo("ParkInRequestHandler => no lock 2");
+                #endif
                 return;
             }
             #else
@@ -33,6 +42,9 @@ modded class GarageServer
             if(!car.m_Trader_HasKey)
             {
                 NotificationSystem.SendNotificationToPlayerIdentityExtended(player.GetIdentity(), 2, "Garage", GetGarageConfig().NotRightToPark, "Garage/image/CarLogo.paa");
+                #ifdef GMDEBUG
+                GetGMLogger().LogInfo("ParkInRequestHandler => no lock 3");
+                #endif
                 return;
             }
             #endif
@@ -44,6 +56,9 @@ modded class GarageServer
         if( (!player.GetAdminStatus() == SZ_IS_ADMIN && car.m_TraderPlus_LastDriverID != player.GetIdentity().GetPlainId()) || car.m_TraderPlus_LastDriverID == string.Empty)
         {
             NotificationSystem.SendNotificationToPlayerIdentityExtended(player.GetIdentity(), 2, "Garage", GetGarageConfig().NotRightToPark, "Garage/image/CarLogo.paa");
+            #ifdef GMDEBUG
+            GetGMLogger().LogInfo("ParkInRequestHandler => no last driver");
+            #endif
             return;
         }
         #endif
@@ -52,12 +67,18 @@ modded class GarageServer
         {
         NotificationSystem.SendNotificationToPlayerIdentityExtended(player.GetIdentity(), 2, "Garage", GetGarageConfig().CarHasMember, "Garage/image/CarLogo.paa");
         //car has member
+        #ifdef GMDEBUG
+        GetGMLogger().LogInfo("ParkInRequestHandler => contain member cant be parked");
+        #endif
         return;
         }
 
         bool state = GarageHelpers.RemoveMoneyFromPlayer(player, GetGarageConfig().ParkInCost);
         if(!state)
         {
+        #ifdef GMDEBUG
+        GetGMLogger().LogInfo("ParkInRequestHandler => money removed failed");
+        #endif
         return;
         }
 
@@ -86,6 +107,10 @@ modded class GarageServer
             #endif
         #endif
         }
+
+        #ifdef GMDEBUG
+        GetGMLogger().LogInfo("Vehicle Data"+VehicleName + " " + vehicleData + " " + VehicleHealth + " " + VehicleFuelAmount);
+        #endif
 
         GarageItemData cargo = GarageHelpers.GetGarageItemData(car);
 
@@ -120,6 +145,9 @@ modded class GarageServer
         GarageData garageData = GarageData.Load(id.ToString(), player.GetIdentity().GetName());
         if(garageData)
         {
+        #ifdef GMDEBUG
+        GetGMLogger().LogInfo("ADD VEHICULE");
+        #endif
         garageData.AddVehicle(VehicleName, cargoId, collateralMoney, vehicleData, VehicleHealth, VehicleFuelAmount, itemsArr, timeStamp);
         garageData.Save(id.ToString());
 
@@ -151,6 +179,14 @@ modded class GarageServer
 
     void ParkOutRequestHandler(PlayerBase player, int id, int listpos,string carname, vector pos, vector dir, vector ori)
     {
+        #ifdef GMDEBUG
+        GetGMLogger().LogInfo("ParkOutRequestHandler");
+        #endif
+
+        #ifdef GMDEBUG
+        GetGMLogger().LogInfo("ParkOutRequestHandler data: "+id + " " + listpos + " " + carname+ " " + pos);
+        #endif
+
         GarageData garageData = GarageData.Load(id.ToString(), player.GetIdentity().GetName());
         if(garageData)
         {
@@ -163,6 +199,9 @@ modded class GarageServer
                 // return;
                 if(pos == garageData.ParkingPosition)
                 {
+                    #ifdef GMDEBUG
+                    GetGMLogger().LogInfo("pos == garageData.ParkingPosition");
+                    #endif
                     ori = garageData.ParkingOrientation;
                 }
                 else
@@ -170,8 +209,14 @@ modded class GarageServer
                     for(int i=0;i<ObjectNPCs.Count();i++)
                     {
                         float distance = vector.Distance(GetGarageConfig().NPCs[i].ParkingPosition,pos);
+                        #ifdef GMDEBUG
+                        GetGMLogger().LogInfo(string.Format("distance: %1", distance));
+                        #endif
                         if(distance < 3)
                         {
+                            #ifdef GMDEBUG
+                            GetGMLogger().LogInfo("distance < 5");
+                            #endif
                             pos = GetGarageConfig().NPCs[i].ParkingPosition;
                             ori = GetGarageConfig().NPCs[i].ParkingOrientation;
                         }
@@ -189,6 +234,9 @@ modded class GarageServer
             {
                 if(garageData.Vehicles[listpos].VehicleName == carname)
                 {
+                    #ifdef GMDEBUG
+                    GetGMLogger().LogInfo("garageData.Vehicles[listpos].VehicleName == carname");
+                    #endif
                     bool state = GarageHelpers.CreateVehicle(player, carname, garageData.Vehicles[listpos].VehicleCargoId, garageData.Vehicles[listpos].CollateralMoney, garageData.Vehicles[listpos].VehicleID, garageData.Vehicles[listpos].EngineHealth, garageData.Vehicles[listpos].FuelAmmount, pos, ori, garageData.Vehicles[listpos].ItemsInCargo);
                     if(state)
                     {
@@ -259,9 +307,16 @@ modded class GarageServer
 
     void GarageRequestHandler(PlayerBase player, int id, vector pos,bool isFlag, vector dir, vector ori)
     {
+        #ifdef GMDEBUG
+        GetGMLogger().LogInfo("GarageRequestHandler");
+        #endif
+
         int start = TickCount(0);
         GarageData garageData = GarageData.Load(id.ToString(), player.GetIdentity().GetName());
         int time = TickCount(start);
+        #ifdef GMDEBUG
+        GetGMLogger().LogInfo("loading time:"+time);
+        #endif
         if(!garageData)
             return;
 
@@ -293,6 +348,7 @@ modded class GarageServer
         if(isFlag)
         {
             parkingpos = pos;
+        }
         else
         {
             for(int i=0;i<ObjectNPCs.Count();i++)
@@ -305,6 +361,10 @@ modded class GarageServer
                 }
             }
         }
+
+        #ifdef GMDEBUG
+        GetGMLogger().LogInfo("send GarageResponse");
+        #endif
 
         GetRPCManager().SendRPC("Garage", "GarageResponse",  new Param6<ref TStringArray, ref TIntArray, vector, int, vector, vector>(vehiclesName, vehiclesHealth, parkingpos, TraderPlusResponse.NO_TRADE, dir, ori), true, player.GetIdentity());
     }
@@ -321,8 +381,26 @@ modded class GarageServer
 
         PlayerBase player = GMGetPlayerByIdentity(sender);
 
+        #ifdef FaboMod
+        if (data.param2.m_CarLockPassword <= 0)
+        {
+            NotificationSystem.SendNotificationToPlayerIdentityExtended(player.GetIdentity(), 2, "Garage", "Invalid Owner" , "Garage/image/CarLogo.paa");
+            return;
+        }
+
+        if (data.param2.GetOwnerCar() != player.GetIdentity().GetId())
+        {
+            NotificationSystem.SendNotificationToPlayerIdentityExtended(player.GetIdentity(), 2, "Garage", "Invalid Owner", "Garage/image/CarLogo.paa");
+            return;
+        }
+        #endif
+
         if(player)
             ParkInRequestHandler(player, data.param1, data.param2, data.param3);
+
+        #ifdef GMDEBUG
+        GetGMLogger().LogInfo("ParkInRequest by player:"+sender.GetName()); //sender.GetName() = player.GetIdentity().GetName()
+        #endif
     }
 
     void ParkOutRequest(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
@@ -340,6 +418,10 @@ modded class GarageServer
 
         if(player)
             ParkOutRequestHandler(player, data.param1, data.param2, data.param3, data.param4, data.param5, data.param6);
+
+        #ifdef GMDEBUG
+        GetGMLogger().LogInfo("ParkOutRequest by player:"+sender.GetName()); //sender.GetName() = player.GetIdentity().GetName()
+        #endif
     }
 
     void GarageRequest(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
@@ -356,5 +438,9 @@ modded class GarageServer
 
         if(player)
             GarageRequestHandler(player, data.param1, data.param2, data.param3, data.param4, data.param5);
+
+        #ifdef GMDEBUG
+        GetGMLogger().LogInfo("GarageRequest by player:"+sender.GetName()); //sender.GetName() = player.GetIdentity().GetName()
+        #endif
     }
 };
