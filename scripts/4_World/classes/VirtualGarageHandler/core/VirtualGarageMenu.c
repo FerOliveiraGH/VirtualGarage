@@ -11,6 +11,8 @@ modded class GarageMenu extends UIScriptedMenu
               bool              m_IsFlag;
               vector            m_Position;
               vector            m_ParkingPos;
+              vector            m_ParkingDir;
+              vector            m_ParkingOri;
               int               m_LowUID;
               bool              m_PayWithBankAccount;
 
@@ -135,6 +137,12 @@ modded class GarageMenu extends UIScriptedMenu
         m_VehiclesName = vehicles;
         m_ParkingPos = parkpos;
     }
+    
+    void SetResponseDataDirOri(vector parkdir, vector parkori)
+    {
+        m_ParkingDir = parkdir;
+        m_ParkingOri = parkori;
+    }
 
     override bool OnClick (Widget w, int x, int y, int button)
     {
@@ -219,7 +227,8 @@ modded class GarageMenu extends UIScriptedMenu
         return;
         }
         if(!m_canTradeRequest)return;
-        GetRPCManager().SendRPC("Garage", "ParkOutRequest",  new Param4<int, int, string, vector>(m_LowUID,m_SelectedVehicle,m_VehiclesName[m_SelectedVehicle],m_ParkingPos), true, NULL);
+
+        GetRPCManager().SendRPC("Garage", "ParkOutRequest",  new Param6<int, int, string, vector, vector, vector>(m_LowUID,m_SelectedVehicle,m_VehiclesName[m_SelectedVehicle],m_ParkingPos, m_ParkingDir, m_ParkingOri), true, NULL);
         m_canTradeRequest = false;
     }
 };

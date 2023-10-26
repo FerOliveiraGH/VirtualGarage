@@ -2,6 +2,8 @@ class OpenMenuAction: ActionInteractBase
 {
     private int    TraderID;
 	private vector Pos;
+	private vector Dir;
+	private vector Ori;
 	private bool   IsFlag;
 	private int    GarageID;
 
@@ -36,9 +38,11 @@ class OpenMenuAction: ActionInteractBase
         if ( GetGame().IsServer() )
             return true;
 
-        BuildingBase nObject = BuildingBase.Cast( target.GetObject() );
+        ItemBase nObject = ItemBase.Cast( target.GetObject() );
         Pos = nObject.GetPosition();
-        
+        Dir = nObject.GetDirection();
+        Ori = nObject.GetOrientation();
+
         return true;
     }
 
@@ -54,11 +58,12 @@ class OpenMenuAction: ActionInteractBase
 		player.m_GarageMenu.m_IsFlag = IsFlag;
 		player.m_GarageMenu.m_Position = Pos;
 		player.m_GarageMenu.m_ParkingPos = Pos;
-		GetGame().ChatPlayer("pos " + Pos);
-		// player.m_GarageMenu.setParquimetro(true);
+		player.m_GarageMenu.m_ParkingDir = Dir;
+		player.m_GarageMenu.m_ParkingOri = Ori;
 		int LowUID = GarageHelpers.GetLowSteamID(GetGame().GetUserManager().GetTitleInitiator().GetUid());
 		player.m_GarageMenu.m_LowUID = LowUID;
-		GetRPCManager().SendRPC("Garage", "GarageRequest",  new Param3<int, vector,bool>(LowUID, Pos, IsFlag), true, NULL);
+
+		GetRPCManager().SendRPC("Garage", "GarageRequest",  new Param5<int, vector,bool, vector, vector>(LowUID, Pos, IsFlag, Dir, Ori), true, NULL);
 	}
 
 	void OpenGarageMenu(Object obj)
