@@ -57,8 +57,8 @@ class CfgMods
 };
 class CfgVehicles
 {
-    class BaseBuildingBase;
-    class Fabo_VirtualGarage: BaseBuildingBase
+    class Seachest;
+    class Fabo_VirtualGarage: Seachest
     {
         name="Fabo_VirtualGarage";
         displayName="Virtual Garage";
@@ -74,7 +74,4 @@ class CfgVehicles
             "VirtualGarage\data\images\parquimetro_co.paa"
         };
     };
-};
-class CfgSlots
-{
 };

@@ -95,9 +95,6 @@ modded class GarageMenu extends UIScriptedMenu
         m_CarInPark = GarageHelpers.CheckForCarAtPos(m_ParkingPos);
         if (m_CarInPark)
         {
-            #ifdef GMDEBUG
-            GetGMLogger().LogInfo("Garage UI m_CarInPark");
-            #endif
             m_GarageList.AddItem(m_CarInPark.GetType(), NULL, 0);
             m_GarageList.SetItemColor(0, 0, ARGB(255, 191, 48, 48) );
             m_VehiclesListName.Insert(m_CarInPark.GetType());
@@ -105,9 +102,6 @@ modded class GarageMenu extends UIScriptedMenu
 
         for (int i=0;i<m_VehiclesName.Count();i++)
         {
-            #ifdef GMDEBUG
-            GetGMLogger().LogInfo(m_VehiclesName[i]);
-            #endif
             int pos = i;
             if(m_CarInPark)pos++;
             m_GarageList.AddItem(m_VehiclesName[i], NULL, 0);

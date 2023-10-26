@@ -9,12 +9,6 @@ modded class GarageCore
         if (!ctx.Read(data))
             return;
 
-        // GetGame().ChatPlayer("Pos " + data.param3 + " Dir " + data.param5 + " Ori " + data.param6);
-
-        #ifdef GMDEBUG
-        GetGMLogger().LogInfo("GarageResponse data:"+data.param1.Count() + " " +  data.param2);
-        #endif
-
         PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
 
         m_VehiclesName.Clear();
@@ -41,9 +35,5 @@ modded class GarageCore
                 break;
             }
         }
-
-        #ifdef GMDEBUG
-        GetGMLogger().LogInfo("GarageResponse");
-        #endif
     }
 };
