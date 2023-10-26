@@ -307,7 +307,7 @@ modded class GarageServer
 
     vector getObjectPosition(vector pos, vector dir)
     {
-        float meters = -3;
+        float meters = -4;
 
         vector objectPosition = pos + dir * meters;
         objectPosition[1] = GetGame().SurfaceY(objectPosition[0],objectPosition[2]);
