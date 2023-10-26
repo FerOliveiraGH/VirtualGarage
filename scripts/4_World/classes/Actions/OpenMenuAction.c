@@ -8,7 +8,7 @@ class OpenMenuAction: ActionInteractBase
     void OpenMenuAction()
     {
         TraderID = -1;
-		IsFlag = false;
+		IsFlag = true;
 		Pos = Vector(0,0,0);
 		m_CommandUID = DayZPlayerConstants.CMD_ACTIONMOD_INTERACTONCE;
 		m_StanceMask = DayZPlayerConstants.STANCEMASK_ERECT | DayZPlayerConstants.STANCEMASK_CROUCH;
@@ -53,6 +53,9 @@ class OpenMenuAction: ActionInteractBase
 		player.m_GarageMenu.Init();
 		player.m_GarageMenu.m_IsFlag = IsFlag;
 		player.m_GarageMenu.m_Position = Pos;
+		player.m_GarageMenu.m_ParkingPos = Pos;
+		GetGame().ChatPlayer("pos " + Pos);
+		// player.m_GarageMenu.setParquimetro(true);
 		int LowUID = GarageHelpers.GetLowSteamID(GetGame().GetUserManager().GetTitleInitiator().GetUid());
 		player.m_GarageMenu.m_LowUID = LowUID;
 		GetRPCManager().SendRPC("Garage", "GarageRequest",  new Param3<int, vector,bool>(LowUID, Pos, IsFlag), true, NULL);
