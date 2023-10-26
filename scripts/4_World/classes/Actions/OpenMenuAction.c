@@ -38,6 +38,11 @@ class OpenMenuAction: ActionInteractBase
         if ( GetGame().IsServer() )
             return true;
 
+		Fabo_VirtualGarage virtualGarage = Fabo_VirtualGarage.Cast(target.GetObject());
+
+		if (virtualGarage.Deployed == 0)
+			return false;
+
         ItemBase nObject = ItemBase.Cast( target.GetObject() );
         Pos = nObject.GetPosition();
         Dir = nObject.GetDirection();
@@ -48,7 +53,7 @@ class OpenMenuAction: ActionInteractBase
 
     override void OnStartClient(ActionData action_data)
     {
-        OpenGarageMenu(action_data.m_Target.GetObject());
+		OpenGarageMenu(action_data.m_Target.GetObject());
     }
 
 	void InitGarageMenu(PlayerBase player)

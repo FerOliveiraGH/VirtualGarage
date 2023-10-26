@@ -1,4 +1,4 @@
-class Fabo_VirtualGarage: SeaChest
+class Fabo_VirtualGarage: ItemBase
 {
     int Deployed = 0;
 
@@ -50,9 +50,9 @@ class Fabo_VirtualGarage: SeaChest
     override void SetActions()
     {
         AddAction(ActionTogglePlaceObject);
-		AddAction(ActionPlaceObject);
+        AddAction(ActionPlaceObject);
         AddAction(ActionTakeItem);
-		AddAction(ActionTakeItemToHands);
+        AddAction(ActionTakeItemToHands);
         AddAction(OpenMenuAction);
     }
 
@@ -60,7 +60,7 @@ class Fabo_VirtualGarage: SeaChest
 	{
         super.OnEndPlacement();
 
-        Deployed = true;
+        Deployed = 1;
 
         SetSynchDirty();
 	}

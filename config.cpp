@@ -57,8 +57,8 @@ class CfgMods
 };
 class CfgVehicles
 {
-    class Seachest;
-    class Fabo_VirtualGarage: Seachest
+    class PowerGenerator;
+    class Fabo_VirtualGarage: PowerGenerator
     {
         name="Fabo_VirtualGarage";
         displayName="Virtual Garage";
@@ -73,5 +73,23 @@ class CfgVehicles
             "VirtualGarage\data\images\parquimetro_co.paa",
             "VirtualGarage\data\images\parquimetro_co.paa"
         };
+        hiddenSelectionsMaterials[]=
+		{
+			"VirtualGarage\data\images\parquimetro_co.rvmat"
+		};
+        class Cargo
+		{
+			itemsCargoSize[]={0,0};
+			openable=0;
+			allowOwnedCargoManipulation=0;
+		};
+        attachments[]={};
+        hiddenSelections[]={};
+        hologramMaterial="";
+        hologramMaterialPath="";
+        class DamageSystem {};
+        class EnergyManager {};
+        class AnimationSources {};
+        class AnimEvents {};
     };
 };
