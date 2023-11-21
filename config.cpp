@@ -61,8 +61,8 @@ class CfgVehicles
     class Fabo_VirtualGarage: PowerGenerator
     {
         name="Fabo_VirtualGarage";
-        displayName="Virtual Garage";
-        descriptionShort="Virtual Garage";
+        displayName="$STR_CfgVehicles_fabo_virtual_garage_title";
+        descriptionShort="$STR_CfgVehicles_fabo_virtual_garage_description";
         scope=2;
         itemSize[]={5,10};
         itemsCargoSize[]={0,0};
