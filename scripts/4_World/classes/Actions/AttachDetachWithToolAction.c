@@ -42,7 +42,7 @@ class AttachDetachWithToolAction: ActionContinuousBase
 
         if (GetGame().IsServer())
         {
-            if (ConfigVirtualGarage().AttachDetachWithTool() == 0)
+            if (ConfigVirtualGarage.GetInstance().AttachDetachWithTool() == 0)
                 return false;
         }
 

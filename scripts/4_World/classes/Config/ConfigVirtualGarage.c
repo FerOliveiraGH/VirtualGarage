@@ -29,4 +29,14 @@ class ConfigVirtualGarage
     {
         JsonFileLoader<ConfigVirtualGarage>.JsonLoadFile(File, this);
     }
+
+    private static ref ConfigVirtualGarage s_Instance = new ConfigVirtualGarage();
+    static ConfigVirtualGarage GetInstance()
+    {
+        if (!s_Instance) {
+            s_Instance = new ConfigVirtualGarage();
+        }
+
+        return s_Instance;
+    }
 }
