@@ -9,7 +9,7 @@ class ConfigVirtualGarage
         if (GetGame().IsServer())
         {
             if (!FileExist(Patch))
-            MakeDirectory(Patch);
+                MakeDirectory(Patch);
 
             if (!FileExist(File))
                 Store();
