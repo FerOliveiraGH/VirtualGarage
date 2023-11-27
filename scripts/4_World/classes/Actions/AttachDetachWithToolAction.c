@@ -40,11 +40,8 @@ class AttachDetachWithToolAction: ActionContinuousBase
         else
             m_Text = "#STR_Action_fabo_virtual_garage_disable";
 
-        if (GetGame().IsServer())
-        {
-            if (ConfigVirtualGarage.GetInstance().AttachDetachWithTool() == 0)
-                return false;
-        }
+        if (ConfigVirtualGarage.GetInstance().AttachDetachWithTool() == 0)
+            return false;
 
         return true;
     }

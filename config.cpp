@@ -52,6 +52,14 @@ class CfgMods
                     "VirtualGarage/scripts/4_World"
                 };
             };
+            class missionScriptModule
+			{
+				value="";
+				files[]=
+				{
+					"VirtualGarage/scripts/5_Mission"
+				};
+			};
         };
 	};
 };

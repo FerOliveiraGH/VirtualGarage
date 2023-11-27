@@ -6,13 +6,20 @@ class ConfigVirtualGarage
 
     void ConfigVirtualGarage()
     {
-        if (!FileExist(Patch))
+        if (GetGame().IsServer())
+        {
+            if (!FileExist(Patch))
             MakeDirectory(Patch);
 
-        if (!FileExist(File))
-            Store();
+            if (!FileExist(File))
+                Store();
 
-        Load();
+            Load();
+            SendRPC();
+        }
+
+        if (GetGame().IsClient())
+            AddRPC();
     }
 
     int AttachDetachWithTool()
@@ -30,7 +37,7 @@ class ConfigVirtualGarage
         JsonFileLoader<ConfigVirtualGarage>.JsonLoadFile(File, this);
     }
 
-    private static ref ConfigVirtualGarage s_Instance = new ConfigVirtualGarage();
+    private static ref ConfigVirtualGarage s_Instance;
     static ConfigVirtualGarage GetInstance()
     {
         if (!s_Instance) {
@@ -39,4 +46,26 @@ class ConfigVirtualGarage
 
         return s_Instance;
     }
+
+    void SendRPC()
+    {
+        GetRPCManager().SendRPC("VirtualGarage", "LoadSettings", new Param1<int>(attachDetachWithTool), true, GetGame().GetPlayer().GetIdentity());
+    }
+
+    void AddRPC()
+    {
+        GetRPCManager().AddRPC("VirtualGarage", "LoadSettings", this, SingleplayerExecutionType.Client);
+    }
+
+    void LoadSettings(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		if(type != CallType.Client)
+			return;
+
+		Param1<int> data;
+		if(!ctx.Read(data))
+			return;
+
+        attachDetachWithTool = data.param1;
+	}
 }
