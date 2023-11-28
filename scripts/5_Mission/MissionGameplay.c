@@ -2,6 +2,6 @@ modded class MissionGameplay
 {
 	void MissionGameplay()
 	{
-	    ConfigVirtualGarage.GetInstance();
+	    ConfigVirtualGarage.GetInstance().AddRPC();
 	}
 }

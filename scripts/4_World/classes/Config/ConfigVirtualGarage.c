@@ -15,11 +15,7 @@ class ConfigVirtualGarage
                 Store();
 
             Load();
-            SendRPC();
         }
-
-        if (GetGame().IsClient())
-            AddRPC();
     }
 
     int AttachDetachWithTool()
