@@ -384,13 +384,13 @@ modded class GarageServer
         #ifdef FaboMod
         if (data.param2.m_CarLockPassword <= 0)
         {
-            NotificationSystem.SendNotificationToPlayerIdentityExtended(player.GetIdentity(), 2, "Garage", "Invalid Owner" , "Garage/image/CarLogo.paa");
+            NotificationSystem.SendNotificationToPlayerIdentityExtended(player.GetIdentity(), 2, "Garage", "#STR_Action_fabo_virtual_invalid_owner" , "Garage/image/CarLogo.paa");
             return;
         }
 
         if (data.param2.GetOwnerCar() != player.GetIdentity().GetId())
         {
-            NotificationSystem.SendNotificationToPlayerIdentityExtended(player.GetIdentity(), 2, "Garage", "Invalid Owner", "Garage/image/CarLogo.paa");
+            NotificationSystem.SendNotificationToPlayerIdentityExtended(player.GetIdentity(), 2, "Garage", "#STR_Action_fabo_virtual_invalid_owner", "Garage/image/CarLogo.paa");
             return;
         }
         #endif

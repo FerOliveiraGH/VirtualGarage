@@ -35,6 +35,9 @@ class AttachDetachWithToolAction: ActionContinuousBase
         if (!virtualGarage)
             return false;
 
+        if (virtualGarage.StaticClass == 1)
+            return false;
+
 		if (virtualGarage && virtualGarage.Deployed == 0)
 		    m_Text = "#STR_Action_fabo_virtual_garage_enable";
         else

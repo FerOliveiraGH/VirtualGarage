@@ -1,6 +1,7 @@
 class Fabo_VirtualGarage: ItemBase
 {
     int Deployed = 0;
+    int StaticClass = 0;
 
     void Fabo_VirtualGarage()
     {

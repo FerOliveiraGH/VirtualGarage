@@ -100,4 +100,7 @@ class CfgVehicles
         class AnimationSources {};
         class AnimEvents {};
     };
+    class Fabo_VirtualGarage_Static: Fabo_VirtualGarage
+    {
+    };
 };
