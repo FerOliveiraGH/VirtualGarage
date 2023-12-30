@@ -43,9 +43,9 @@ class ConfigVirtualGarage
         return s_Instance;
     }
 
-    void SendRPC()
+    void SendRPC(PlayerIdentity identity)
     {
-        GetRPCManager().SendRPC("VirtualGarage", "LoadSettings", new Param1<int>(attachDetachWithTool), true, GetGame().GetPlayer().GetIdentity());
+        GetRPCManager().SendRPC("VirtualGarage", "LoadSettings", new Param1<int>(attachDetachWithTool), true, identity);
     }
 
     void AddRPC()

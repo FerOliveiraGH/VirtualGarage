@@ -4,6 +4,6 @@ modded class MissionServer
 	{
 		super.InvokeOnConnect(player, identity);
 
-        ConfigVirtualGarage.GetInstance().SendRPC();
+        ConfigVirtualGarage.GetInstance().SendRPC(identity);
 	}
 }
