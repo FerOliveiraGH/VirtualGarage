@@ -5,5 +5,9 @@ modded class MissionServer
 		super.InvokeOnConnect(player, identity);
 
         ConfigVirtualGarage.GetInstance().SendRPC(identity);
+
+        Fabo_StoreVehicleCore.GetInstance();
+        Fabo_DeployVehicleCore.GetInstance();
+        Fabo_ListGarageCore.GetInstance();
 	}
 }

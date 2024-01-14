@@ -10,8 +10,8 @@ FrameWidgetClass GarageMainFrame {
  {
   PanelWidgetClass PanelWidget0 {
    ignorepointer 1
-   position 0 0
-   size 0.4 0.7
+   position -0.00675 -0.00164
+   size 0.53939 0.71086
    halign center_ref
    valign center_ref
    hexactpos 0
@@ -36,8 +36,8 @@ FrameWidgetClass GarageMainFrame {
      {
       GridSpacerWidgetClass Grid {
        ignorepointer 1
-       position 0 0.05
-       size 0.963 0.812
+       position 0 0.05272
+       size 0.963 1.70117
        halign center_ref
        valign center_ref
        hexactpos 0
@@ -47,62 +47,77 @@ FrameWidgetClass GarageMainFrame {
        "Size To Content V" 1
        Columns 1
        {
-        TextWidgetClass TextListTitle {
-         visible 1
+        GridSpacerWidgetClass GridSpacerWidget1 {
          ignorepointer 1
-         color 0.8588 0.8588 0.8588 1
-         position 0 0.02
-         size 0.4562 0.0766
-         halign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         draggable 0
-         text "#gm_list_title"
-         font "gui/fonts/etelkatextpro22"
-         "text color" 0.6196 0.6196 0.6196 1
-         "exact text" 0
-         "size to text h" 0
-         "size to text v" 0
-         "text halign" center
-         "text valign" center
-        }
-        TextListboxWidgetClass GarageList {
-         visible 1
-         position -0.24786 -0.12427
-         size 0.41594 0.34031
+         position 0 -0.02148
+         size 0.033 0.77497
          halign center_ref
          valign center_ref
          hexactpos 0
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style Default
-         "title visible" 0
-         colums ""
-         lines 10
-         "highlight row" 1
-         font "gui/fonts/etelkatextpro16"
-        }
-        GridSpacerWidgetClass GridSpacerWidget0 {
-         visible 1
-         ignorepointer 1
-         position 0.54424 0.12424
-         size 0.43412 0.74292
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
+         "Size To Content H" 1
          "Size To Content V" 1
-         Columns 1
-         Rows 6
+         Columns 2
+         Rows 1
          {
+          GridSpacerWidgetClass GridSpacerWidget2 {
+           ignorepointer 1
+           position 0.008 0.63822
+           size 354 0.25178
+           hexactpos 0
+           vexactpos 0
+           hexactsize 1
+           vexactsize 0
+           "Size To Content V" 1
+           Columns 1
+           Rows 2
+           {
+            TextWidgetClass TextListTitle {
+             visible 1
+             ignorepointer 1
+             color 0.8588 0.8588 0.8588 1
+             position 0 0.046
+             size 0.4562 0.11871
+             halign center_ref
+             hexactpos 0
+             vexactpos 0
+             hexactsize 0
+             vexactsize 0
+             draggable 0
+             text "#fabo_list_title"
+             font "gui/fonts/etelkatextpro22"
+             "text color" 0.6196 0.6196 0.6196 1
+             "exact text" 0
+             "size to text h" 0
+             "size to text v" 0
+             "text halign" center
+             "text valign" center
+            }
+            TextListboxWidgetClass GarageList {
+             visible 1
+             position 0 1.0693
+             size -0.24933 1.87731
+             valign center_ref
+             hexactpos 0
+             vexactpos 0
+             hexactsize 0
+             vexactsize 0
+             style Default
+             "title visible" 0
+             colums ""
+             lines 10
+             "highlight row" 1
+             font "gui/fonts/etelkatextpro16"
+            }
+           }
+          }
           ItemPreviewWidgetClass VehiclePreview {
            ignorepointer 1
-           position 0.27648 -0.2957
-           size 0.38935 0.49926
-           halign center_ref
+           position -0.45536 0
+           size 1.00028 0.49926
+           halign right_ref
            valign center_ref
            hexactpos 0
            vexactpos 0
@@ -112,56 +127,94 @@ FrameWidgetClass GarageMainFrame {
            "force flip enable" 1
            "force flip" 1
           }
-          GridSpacerWidgetClass GridStatut {
+         }
+        }
+        GridSpacerWidgetClass GridSpacerWidget0 {
+         visible 1
+         ignorepointer 1
+         position 0.5442 0.46393
+         size 0.4341 0.40317
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         "Size To Content V" 1
+         Rows 1
+         {
+          GridSpacerWidgetClass GridSpacerWidget3 {
            ignorepointer 1
-           position 0.023 0.021
-           size 0.111 0.11
+           position 10 10
+           size 48 46.9249
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           Columns 1
+           Rows 1
+           {
+            GridSpacerWidgetClass GridStatut {
+             ignorepointer 1
+             position 0.023 0.021
+             size 0.111 -0.4368
+             hexactpos 0
+             vexactpos 0
+             hexactsize 0
+             vexactsize 0
+             "Size To Content H" 1
+             Columns 2
+             Rows 1
+             {
+              ImageWidgetClass ParkingStatut {
+               visible 1
+               clipchildren 0
+               inheritalpha 0
+               ignorepointer 1
+               color 0 1 0 1
+               position 1.29939 -0.46155
+               size 36 -69
+               valign center_ref
+               hexactpos 0
+               vexactpos 0
+               hexactsize 1
+               vexactsize 1
+               image0 "set:dayz_gui image:circle"
+               mode additive
+               "src alpha" 1
+               "clamp mode" clamp
+               "stretch mode" stretch_w_h
+               filter 1
+              }
+              TextWidgetClass ParkingText {
+               ignorepointer 1
+               position 0.51963 0.55137
+               size 0.9961 0.41933
+               hexactpos 0
+               vexactpos 0
+               hexactsize 0
+               vexactsize 0
+               text "#fabo_parking_availability"
+               font "gui/fonts/etelkatextpro22"
+               "text valign" center
+              }
+             }
+            }
+           }
+          }
+          GridSpacerWidgetClass GridSpacerWidget4 {
+           ignorepointer 1
+           position 0.008 0.06
+           size 0.039 0.329
            hexactpos 0
            vexactpos 0
            hexactsize 0
            vexactsize 0
-           "Size To Content H" 1
-           Columns 2
+           Columns 1
            Rows 1
-           {
-            ImageWidgetClass ParkingStatut {
-             visible 1
-             clipchildren 0
-             inheritalpha 0
-             ignorepointer 1
-             color 0 1 0 1
-             position 1.29939 -0.13356
-             size 0.04868 -1.07358
-             valign center_ref
-             hexactpos 0
-             vexactpos 0
-             hexactsize 0
-             vexactsize 0
-             image0 "set:dayz_gui image:circle"
-             mode additive
-             "src alpha" 1
-             "no wrap" 1
-             stretch 1
-             filter 1
-            }
-            TextWidgetClass ParkingText {
-             ignorepointer 1
-             position 0.51963 0.55137
-             size 0.94732 0.74774
-             hexactpos 0
-             vexactpos 0
-             hexactsize 0
-             vexactsize 0
-             text "Parking available"
-             font "gui/fonts/etelkatextpro22"
-             "text valign" center
-            }
-           }
           }
           GridSpacerWidgetClass GridButtons {
            ignorepointer 1
-           position 0.247 0.01985
-           size 0.44815 5.25812
+           position 0.28304 0.01985
+           size 0.37607 5.25812
            halign center_ref
            valign bottom_ref
            hexactpos 0
@@ -171,15 +224,14 @@ FrameWidgetClass GarageMainFrame {
            Padding 5
            Margin 10
            "Size To Content V" 1
-           Columns 2
-           Rows 2
+           Columns 1
            {
             PanelWidgetClass BuyPanelWidget {
              visible 1
              ignorepointer 1
              color 0 0 0 0.7843
              position 0 0
-             size 1 64
+             size 100 64
              hexactpos 1
              vexactpos 1
              hexactsize 1
@@ -208,7 +260,7 @@ FrameWidgetClass GarageMainFrame {
                  vexactpos 0
                  hexactsize 0
                  vexactsize 0
-                 text "#gm_bttn_parkout"
+                 text "#fabo_bttn_parkout"
                  font "gui/fonts/etelkatextpro22"
                  "text halign" center
                  "text valign" center
@@ -251,7 +303,7 @@ FrameWidgetClass GarageMainFrame {
                  vexactpos 0
                  hexactsize 0
                  vexactsize 0
-                 text "#gm_bttn_parkin"
+                 text "#fabo_bttn_parkin"
                  font "gui/fonts/etelkatextpro22"
                  "text halign" center
                  "text valign" center
@@ -281,7 +333,7 @@ FrameWidgetClass GarageMainFrame {
      vexactsize 0
      draggable 0
      style Bold
-     text "#gm_garage_title"
+     text "#fabo_garage_title"
      font "gui/fonts/etelkatextpro28"
      "text color" 0.6196 0.6196 0.6196 1
      "exact text" 0
@@ -289,6 +341,32 @@ FrameWidgetClass GarageMainFrame {
      "size to text v" 1
      "text halign" center
      "text valign" center
+    }
+    ButtonWidgetClass ButtonClose {
+     color 0.7333 0.7333 0.7333 1
+     position 0.01 0.015
+     size 30 30
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 1
+     vexactsize 1
+     style OldStyle
+     {
+      TextWidgetClass TextClose {
+       ignorepointer 1
+       position 0 0
+       size 1 1
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       text "X"
+       font "gui/fonts/etelkatextpro22"
+       "text halign" center
+       "text valign" center
+      }
+     }
     }
    }
   }

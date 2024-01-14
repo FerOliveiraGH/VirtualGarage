@@ -18,6 +18,6 @@ class Fabo_VirtualGarage_Static: Fabo_VirtualGarage
 
     override void SetActions()
     {
-        AddAction(OpenMenuAction);
+        AddAction(Fabo_OpenMenuAction);
     }
 }

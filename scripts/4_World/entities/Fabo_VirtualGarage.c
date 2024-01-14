@@ -54,7 +54,7 @@ class Fabo_VirtualGarage: ItemBase
         AddAction(ActionPlaceObject);
         AddAction(ActionTakeItem);
         AddAction(ActionTakeItemToHands);
-        AddAction(OpenMenuAction);
+        AddAction(Fabo_OpenMenuAction);
     }
 
     override void OnEndPlacement()

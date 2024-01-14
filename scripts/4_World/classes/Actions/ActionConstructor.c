@@ -4,7 +4,10 @@ modded class ActionConstructor
     {
         super.RegisterActions(actions);
 
-        actions.Insert(OpenMenuAction);
+        actions.Insert(Fabo_OpenMenuAction);
+//        actions.Insert(Fabo_CreateVehicle);
+//        actions.Insert(Fabo_DeployVehicleAction);
+//        actions.Insert(Fabo_StoreVehicleAction);
         actions.Insert(AttachDetachWithToolAction);
     }
 }
