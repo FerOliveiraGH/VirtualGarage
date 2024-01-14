@@ -3,7 +3,6 @@ class Fabo_VirtualVehicle
     private const string Root = "$profile:VirtualGarage\\";
     private const string Database = "$profile:VirtualGarage\\database\\";
     private const string Path = "$profile:VirtualGarage\\database\\vehicles\\";
-    private string PathUser;
     private int UniqueID;
     private string Type;
     private int OwnerID;
@@ -32,9 +31,9 @@ class Fabo_VirtualVehicle
             MakeDirectory(Path);
         }
 
-        if (!FileExist(Path + OwnerID + "\\"))
+        if (!FileExist(Path + ownerID + "\\"))
         {
-            MakeDirectory(Path + OwnerID + "\\");
+            MakeDirectory(Path + ownerID + "\\");
         }
     }
 

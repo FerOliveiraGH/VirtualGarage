@@ -2,7 +2,6 @@ class Fabo_StoreVehicleCore
 {
     void Fabo_StoreVehicleCore()
     {
-        Print("FaboMod :: InitRPC");
         InitRPC();
     }
 
@@ -23,26 +22,39 @@ class Fabo_StoreVehicleCore
 
     void StoreVehicleRPC( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
     {
-        Param3<int, CarScript, vector> data;
+        Param2<int, CarScript> data;
 
         if (!ctx.Read(data))
             return;
 
         CarScript vehicle = data.param2;
 
-        Fabo_VirtualVehicle virtualVehicle = new Fabo_VirtualVehicle(data.param1, CreateUniqueID());
+        if (!vehicle)
+            return;
+
+        int uniqueId = CreateUniqueID();
+
+        Fabo_ListGarage fabo_ListGarage = new Fabo_ListGarage(data.param1);
+        fabo_ListGarage.addVehicleId(uniqueId);
+        fabo_ListGarage.Store();
+
+        Fabo_VirtualVehicle virtualVehicle = new Fabo_VirtualVehicle(data.param1, uniqueId);
 
         virtualVehicle.SetType(vehicle.GetType());
         virtualVehicle.SetFuel(vehicle.GetFluidFraction(CarFluid.FUEL));
         virtualVehicle.SetOwner("" + data.param1);
+
         #ifdef TraderPlus
         virtualVehicle.SetPassword(vehicle.m_CarLockPassword);
         #endif
-        virtualVehicle.SetAttachments(vehicle);
 
+        virtualVehicle.SetAttachments(vehicle);
         virtualVehicle.Store();
 
-//        vehicle.Delete();
+        vehicle.Delete();
+        vehicle.SetSynchDirty();
+
+        GetRPCManager().SendRPC("VirtualGarage", "UpdateListVehicleRPC",  new Param1<int>(data.param1), true, NULL);
     }
 
     int CreateUniqueID()

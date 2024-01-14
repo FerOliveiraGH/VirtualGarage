@@ -30,17 +30,14 @@ class Fabo_ListGarageCore
         Fabo_ListGarage fabo_ListGarage = new Fabo_ListGarage(data.param1);
 
         ref array<string> typeVehicles = new array<string>;
+        array<int> vehiclesIds = fabo_ListGarage.getVehiclesIds();
 
-        foreach(int vehicleId : fabo_ListGarage.getVehiclesIds())
+        foreach(int vehicleId : vehiclesIds)
         {
             Fabo_VirtualVehicle fabo_VirtualVehicle = new Fabo_VirtualVehicle(data.param1, vehicleId);
             fabo_VirtualVehicle.Load();
-            typeVehicles.Insert(fabo_VirtualVehicle.GetType())
-            Print("FaboMod :: fabo_VirtualVehicle.GetType() " + fabo_VirtualVehicle.GetType());
+            typeVehicles.Insert(fabo_VirtualVehicle.GetType());
         }
-//        fabo_ListGarageCore.InitUser(data.param1);
-
-//        Print("FaboMod :: fabo_ListGarage.getVehiclesIds() " + fabo_ListGarage.getVehiclesIds());
 
         GetRPCManager().SendRPC("VirtualGarage", "SetListVehicleRPC",  new Param1<array<string>>(typeVehicles), true, NULL);
     }
@@ -57,13 +54,9 @@ class Fabo_ListGarage
         this.UserId = userId;
 
         if (!FileExist(Path + UserId + ".json"))
-        {
             Store();
-        }
         else
-        {
             Load();
-        }
     }
 
     void Store()
@@ -81,8 +74,18 @@ class Fabo_ListGarage
         return VehiclesIds;
     }
 
+    int getVehicleId(int index)
+    {
+        return VehiclesIds[index];
+    }
+
     void addVehicleId(int vehicleId)
     {
         VehiclesIds.Insert(vehicleId);
+    }
+
+    void removeVehicleId(int index)
+    {
+        VehiclesIds.Remove(index);
     }
 }

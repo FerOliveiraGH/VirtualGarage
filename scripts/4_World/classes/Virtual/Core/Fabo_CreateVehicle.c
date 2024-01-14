@@ -19,7 +19,7 @@ class Fabo_CreateVehicle
 
         SetCarLock(vehicle, virtualVehicle);
 
-//        virtualVehicle.Delete();
+        virtualVehicle.Delete();
     }
 
     void CreateAttachments(EntityAI obj, array<ref Fabo_VirtualVehicleAttachment> attachments)

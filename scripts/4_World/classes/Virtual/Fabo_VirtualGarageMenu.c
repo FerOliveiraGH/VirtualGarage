@@ -6,27 +6,21 @@ class Fabo_VirtualGarageMenu extends UIScriptedMenu
     private   TextListboxWidget m_GarageList;
     private   ImageWidget       m_ParkingStatus;
 
-//    private   ItemPreviewWidget m_MainItemPreview;
+    private   ItemPreviewWidget m_MainItemPreview;
 
-//              bool              m_IsFlag;
-//              vector            m_Position;
               vector            m_ParkingPos;
               vector            m_ParkingDir;
               vector            m_ParkingOri;
               int               m_LowUID;
-//              bool              m_PayWithBankAccount;
-
-//    private   float             m_transactionTick;
-//    private   bool              m_canTradeRequest;
 
     private   ref TStringArray  m_VehiclesName;
     private   ref TStringArray  m_VehiclesListName;
-//
+
     private   CarScript         m_CarInPark;
-//
+
     private   int               m_SelectedVehicle;
-//
-//    private   EntityAI          m_previewItem;
+
+    private   EntityAI          m_previewItem;
 
     void Fabo_VirtualGarageMenu()
     {
@@ -69,8 +63,8 @@ class Fabo_VirtualGarageMenu extends UIScriptedMenu
         PPEffects.SetBlurMenu(0);
         GetGame().GetInput().ResetGameFocus();
 
-//        if(m_previewItem)
-//            GetGame().ObjectDelete(m_previewItem);
+        if(m_previewItem)
+            GetGame().ObjectDelete(m_previewItem);
 
         Close();
     }
@@ -141,20 +135,15 @@ class Fabo_VirtualGarageMenu extends UIScriptedMenu
         if (m_VehiclesListName.Count() > 0)
         {
             m_SelectedVehicle = 0;
-//            UpdateVehiclePreview(m_VehiclesListName[m_SelectedVehicle]);
+            UpdateVehiclePreview(m_VehiclesListName[m_SelectedVehicle]);
         }
     }
 
-    void SetResponseData(TStringArray vehicles, vector parkpos)
+    void SetResponseData(TStringArray vehicles, vector parkpos, vector parkori)
     {
         m_VehiclesName.Clear();
         m_VehiclesName = vehicles;
         m_ParkingPos = parkpos;
-    }
-    
-    void SetResponseDataDirOri(vector parkdir, vector parkori)
-    {
-        m_ParkingDir = parkdir;
         m_ParkingOri = parkori;
     }
 
@@ -184,32 +173,24 @@ class Fabo_VirtualGarageMenu extends UIScriptedMenu
     void SelectVehicle()
     {
         m_SelectedVehicle = m_GarageList.GetSelectedRow();
-//        int LowUID = GetLowSteamID(GetGame().GetUserManager().GetTitleInitiator().GetUid());
-//        GetRPCManager().SendRPC("VirtualGarage", "GetListVehicleRPC",  new Param1<int>(LowUID), true, NULL);
 
-//        if(m_SelectedVehicle == -1)return;
+        if(m_SelectedVehicle == -1)return;
 
-//        UpdateVehiclePreview(m_VehiclesListName[m_SelectedVehicle]);
+        UpdateVehiclePreview(m_VehiclesListName[m_SelectedVehicle]);
     }
-
-
 
     void StoreVehicle()
     {
-        GetGame().ChatPlayer("FaboMod :: StoreVehicle ");
         int LowUID = GetLowSteamID(GetGame().GetUserManager().GetTitleInitiator().GetUid());
-        GetGame().ChatPlayer("FaboMod :: LowUID " + LowUID);
 
-        GetRPCManager().SendRPC("VirtualGarage", "StoreVehicleRPC",  new Param3<int, CarScript, vector>(LowUID, m_CarInPark, m_ParkingPos), true, NULL);
+        GetRPCManager().SendRPC("VirtualGarage", "StoreVehicleRPC",  new Param2<int, CarScript>(LowUID, m_CarInPark), true, NULL);
     }
 
     void DeployVehicle()
     {
-        GetGame().ChatPlayer("FaboMod :: DeployVehicle ");
         int LowUID = GetLowSteamID(GetGame().GetUserManager().GetTitleInitiator().GetUid());
-        GetGame().ChatPlayer("FaboMod :: LowUID " + LowUID);
 
-//        GetRPCManager().SendRPC("VirtualGarage", "DeployVehicleRPC",  new Param3<int, CarScript, vector>(LowUID, m_SelectedVehicle, m_ParkingPos), true, NULL);
+        GetRPCManager().SendRPC("VirtualGarage", "DeployVehicleRPC",  new Param4<vector, vector, int, int>(m_ParkingPos, m_ParkingOri, LowUID, m_SelectedVehicle), true, NULL);
     }
 
     int GetLowSteamID(string SteamID64)
@@ -222,64 +203,33 @@ class Fabo_VirtualGarageMenu extends UIScriptedMenu
 		return temp_ID.ToInt();
 	}
 
-//    void UpdateVehiclePreview(string itemType)
-//    {
-//        string tempstr = itemType;
-//        tempstr.ToLower();
-//        if ( !m_MainItemPreview )
-//        {
-//            Widget preview_frame = layoutRoot.FindAnyWidget("VehiclePreview");
-//
-//            if ( preview_frame )
-//            {
-//                float width;
-//                float height;
-//                preview_frame.GetSize(width, height);
-//
-//                m_MainItemPreview = ItemPreviewWidget.Cast( GetGame().GetWorkspace().CreateWidget(ItemPreviewWidgetTypeID, 0, 0, 1, 1, WidgetFlags.VISIBLE, ARGB(255, 255, 255, 255), 10, preview_frame) );
-//            }
-//        }
-//
-//        if ( m_previewItem )
-//            GetGame().ObjectDelete( m_previewItem );
-//
-//        m_previewItem = EntityAI.Cast(GetGame().CreateObject( itemType, "0 0 0", true, false, true ));
-//        if(!m_previewItem)return;
-//
-//        m_MainItemPreview.SetItem(m_previewItem);
-//        m_MainItemPreview.SetModelPosition( Vector( 0, 0, 0.5 ) );
-//        m_MainItemPreview.SetModelOrientation( vector.Zero );
-//        m_MainItemPreview.SetView( m_previewItem.GetViewIndex() );
-//    }
+    void UpdateVehiclePreview(string itemType)
+    {
+        string tempstr = itemType;
+        tempstr.ToLower();
+        if ( !m_MainItemPreview )
+        {
+            Widget preview_frame = layoutRoot.FindAnyWidget("VehiclePreview");
 
-//    void ParkInHandler()
-//    {
-//        if(!m_CarInPark)return;
-//        if(GetGarageConfig().VehicleMustHaveLock)
-//        {
-//            if(!GarageHelpers.CanParkVehicle(m_CarInPark))return;
-//        }
-//        if(m_VehiclesName.Count() + 1 > GetGarageConfig().MaxVehicleStored)
-//        {
-//            NotificationSystem.AddNotificationExtended( 2, "VirtualGarage", GetGarageConfig().MaxVehicleStoredReached, "VirtualGarage/data/images/vglogo.paa" );
-//            return;
-//        }
-//
-//        if(!m_canTradeRequest)return;
-//        GetRPCManager().SendRPC("Garage", "ParkInRequest",  new Param3<int, CarScript, vector>(m_LowUID, m_CarInPark, m_ParkingPos), true, NULL);
-//        m_canTradeRequest = false;
-//    }
-//
-//    void ParkOutHandler()
-//    {
-//        if(m_CarInPark)
-//        {
-//            NotificationSystem.AddNotificationExtended( 2, "VirtualGarage", GetGarageConfig().ParkingNotAvailable, "VirtualGarage/data/images/vglogo.paa" );
-//            return;
-//        }
-//        if(!m_canTradeRequest)return;
-//
-//        GetRPCManager().SendRPC("Garage", "ParkOutRequest",  new Param6<int, int, string, vector, vector, vector>(m_LowUID,m_SelectedVehicle,m_VehiclesName[m_SelectedVehicle],m_ParkingPos, m_ParkingDir, m_ParkingOri), true, NULL);
-//        m_canTradeRequest = false;
-//    }
+            if ( preview_frame )
+            {
+                float width;
+                float height;
+                preview_frame.GetSize(width, height);
+
+                m_MainItemPreview = ItemPreviewWidget.Cast( GetGame().GetWorkspace().CreateWidget(ItemPreviewWidgetTypeID, 0, 0, 1, 1, WidgetFlags.VISIBLE, ARGB(255, 255, 255, 255), 10, preview_frame) );
+            }
+        }
+
+        if ( m_previewItem )
+            GetGame().ObjectDelete( m_previewItem );
+
+        m_previewItem = EntityAI.Cast(GetGame().CreateObject( itemType, "0 0 0", true, false, true ));
+        if(!m_previewItem)return;
+
+        m_MainItemPreview.SetItem(m_previewItem);
+        m_MainItemPreview.SetModelPosition( Vector( 0, 0, 0.5 ) );
+        m_MainItemPreview.SetModelOrientation( vector.Zero );
+        m_MainItemPreview.SetView( m_previewItem.GetViewIndex() );
+    }
 };
