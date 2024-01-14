@@ -30,7 +30,34 @@ class Fabo_StoreVehicleCore
         CarScript vehicle = data.param2;
 
         if (!vehicle)
+        {
+            NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_garage_title", "#fabo_vehicle_not_found", "VirtualGarage/data/images/vglogo.paa");
             return;
+        }
+
+        #ifdef FaboMod
+        if (vehicle.GetOwnerCar() != sender.GetId())
+        {
+            NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_garage_title", "#STR_Action_fabo_virtual_invalid_owner", "VirtualGarage/data/images/vglogo.paa");
+            return;
+        }
+        #endif
+
+        #ifdef ClaimVehicles
+        if (!vehicle.IsOwned())
+        {
+            NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_garage_title", "#STR_Action_fabo_virtual_invalid_owner", "VirtualGarage/data/images/vglogo.paa");
+            return;
+        }
+        #endif
+
+        #ifdef TraderPlus
+        if (vehicle.m_CarLockPassword <= 0)
+        {
+            NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_garage_title", "#STR_Action_fabo_virtual_invalid_owner", "VirtualGarage/data/images/vglogo.paa");
+            return;
+        }
+        #endif
 
         int uniqueId = CreateUniqueID();
 
@@ -55,6 +82,8 @@ class Fabo_StoreVehicleCore
         vehicle.SetSynchDirty();
 
         GetRPCManager().SendRPC("VirtualGarage", "UpdateListVehicleRPC",  new Param1<int>(data.param1), true, NULL);
+
+        NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_garage_title", "#fabo_success_storage", "VirtualGarage/data/images/vglogo.paa");
     }
 
     int CreateUniqueID()
