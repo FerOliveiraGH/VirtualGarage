@@ -3,6 +3,7 @@ class ConfigVirtualGarage
     private const string Patch = "$profile:VirtualGarage\\";
     private const string File = "$profile:VirtualGarage\\settings.json";
     private int attachDetachWithTool = 1;
+    private int limit;
 
     void ConfigVirtualGarage()
     {
@@ -12,7 +13,16 @@ class ConfigVirtualGarage
                 MakeDirectory(Patch);
 
             if (!FileExist(File))
+            {
+                limit = 2;
                 Store();
+            }
+
+            if (!limit)
+            {
+                limit = 2;
+                Store();
+            }
 
             Load();
         }
@@ -21,6 +31,11 @@ class ConfigVirtualGarage
     int AttachDetachWithTool()
     {
         return attachDetachWithTool;
+    }
+
+    int Limit()
+    {
+        return limit;
     }
 
     private void Store()

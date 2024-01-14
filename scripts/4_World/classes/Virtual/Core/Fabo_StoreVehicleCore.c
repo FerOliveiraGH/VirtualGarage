@@ -59,9 +59,16 @@ class Fabo_StoreVehicleCore
         }
         #endif
 
+        Fabo_ListGarage fabo_ListGarage = new Fabo_ListGarage(data.param1);
+
+        if (fabo_ListGarage.getVehiclesIds().Count() >= ConfigVirtualGarage.GetInstance().Limit())
+        {
+            NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_garage_title", "#fabo_vehicle_max_limit", "VirtualGarage/data/images/vglogo.paa");
+            return;
+        }
+
         int uniqueId = CreateUniqueID();
 
-        Fabo_ListGarage fabo_ListGarage = new Fabo_ListGarage(data.param1);
         fabo_ListGarage.addVehicleId(uniqueId);
         fabo_ListGarage.Store();
 
