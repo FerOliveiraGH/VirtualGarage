@@ -164,7 +164,7 @@ FrameWidgetClass GarageMainFrame {
              Columns 2
              Rows 1
              {
-              ImageWidgetClass ParkingStatut {
+              ImageWidgetClass ParkingStatus {
                visible 1
                clipchildren 0
                inheritalpha 0

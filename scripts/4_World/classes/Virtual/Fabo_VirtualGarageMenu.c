@@ -5,6 +5,7 @@ class Fabo_VirtualGarageMenu extends UIScriptedMenu
     private   ButtonWidget      m_ButtonClose;
     private   TextListboxWidget m_GarageList;
     private   ImageWidget       m_ParkingStatus;
+    private   TextWidget        m_ParkingText;
 
     private   ItemPreviewWidget m_MainItemPreview;
 
@@ -77,6 +78,7 @@ class Fabo_VirtualGarageMenu extends UIScriptedMenu
         m_ButtonClose = ButtonWidget.Cast( layoutRoot.FindAnyWidget( "ButtonClose" ) );
         m_GarageList = TextListboxWidget.Cast( layoutRoot.FindAnyWidget( "GarageList" ) );
         m_ParkingStatus  = ImageWidget.Cast(layoutRoot.FindAnyWidget( "ParkingStatus" ));
+        m_ParkingText  = TextWidget.Cast(layoutRoot.FindAnyWidget( "ParkingText" ));
 
         layoutRoot.Show(false);
 
@@ -123,13 +125,15 @@ class Fabo_VirtualGarageMenu extends UIScriptedMenu
             m_VehiclesListName.Insert(m_VehiclesName[i]);
         }
 
-        if (m_ParkingPos == Vector(-1,-1,-1) || m_ParkingPos == Vector(0,0,0) || m_CarInPark)
+        if (m_CarInPark)
         {
             m_ParkingStatus.SetColor(ARGB(255,191,48,48));
+            m_ParkingText.SetText("#fabo_parking_unavailability");
         }
         else
         {
             m_ParkingStatus.SetColor(ARGB(255,0,255,0));
+            m_ParkingText.SetText("#fabo_parking_availability");
         }
 
         if (m_VehiclesListName.Count() > 0)
@@ -189,6 +193,9 @@ class Fabo_VirtualGarageMenu extends UIScriptedMenu
     void DeployVehicle()
     {
         int LowUID = GetLowSteamID(GetGame().GetUserManager().GetTitleInitiator().GetUid());
+
+        if (m_CarInPark)
+            m_SelectedVehicle--;
 
         GetRPCManager().SendRPC("VirtualGarage", "DeployVehicleRPC",  new Param4<vector, vector, int, int>(m_ParkingPos, m_ParkingOri, LowUID, m_SelectedVehicle), true, NULL);
     }
