@@ -96,7 +96,7 @@ class Fabo_VirtualGarageMenu extends UIScriptedMenu
 			for (int i = 0; i < objects.Count(); i++ )
 			{
 				if (Class.CastTo( car, objects.Get(i) ) )
-						return car;
+                    return car;
 			}
 		}
 		return NULL;
