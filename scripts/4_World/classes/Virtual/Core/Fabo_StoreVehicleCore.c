@@ -70,9 +70,6 @@ class Fabo_StoreVehicleCore
 
         int uniqueId = CreateUniqueID();
 
-        fabo_ListGarage.addVehicleId(uniqueId);
-        fabo_ListGarage.Store();
-
         Fabo_VirtualVehicle virtualVehicle = new Fabo_VirtualVehicle(data.param1, uniqueId);
 
         virtualVehicle.SetType(vehicle.GetType());
@@ -85,6 +82,9 @@ class Fabo_StoreVehicleCore
 
         virtualVehicle.SetAttachments(vehicle);
         virtualVehicle.Store();
+
+        fabo_ListGarage.addVehicleId(uniqueId);
+        fabo_ListGarage.Store();
 
         vehicle.Delete();
         vehicle.SetSynchDirty();
