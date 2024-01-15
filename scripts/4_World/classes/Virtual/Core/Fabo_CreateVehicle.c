@@ -90,21 +90,11 @@ class Fabo_CreateVehicle
         #ifdef TraderPlus
         if (virtualVehicle.GetPassword() > 0)
         {
-            vehicle.SetCarLockOwner(GetLowSteamUID(virtualVehicle.GetOwner()));
+            vehicle.SetCarLockOwner(virtualVehicle.GetOwnerID());
             vehicle.SetCarLock(true);
             vehicle.SetCarLockPassword(virtualVehicle.GetPassword());
         }
         vehicle.SetSynchDirty();
         #endif
-    }
-
-    int GetLowSteamUID(string playerUID)
-    {
-        string temp_ID="";
-        for(int j = 8; j<17; j++)
-        {
-            temp_ID+=playerUID.Get(j);
-        }
-        return temp_ID.ToInt();
     }
 }

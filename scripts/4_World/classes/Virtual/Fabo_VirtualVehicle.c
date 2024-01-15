@@ -52,6 +52,11 @@ class Fabo_VirtualVehicle
         return this.Fuel;
     }
 
+    int GetOwnerID()
+    {
+        return this.OwnerID;
+    }
+
     string GetOwner()
     {
         return this.Owner;

@@ -60,8 +60,9 @@ class Fabo_StoreVehicleCore
         #endif
 
         Fabo_ListGarage fabo_ListGarage = new Fabo_ListGarage(data.param1);
+        int limit = ConfigVirtualGarage.GetInstance().Limit();
 
-        if (fabo_ListGarage.getVehiclesIds().Count() >= ConfigVirtualGarage.GetInstance().Limit())
+        if (limit != -1 && fabo_ListGarage.getVehiclesIds().Count() >= limit)
         {
             NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_garage_title", "#fabo_vehicle_max_limit", "VirtualGarage/data/images/vglogo.paa");
             return;

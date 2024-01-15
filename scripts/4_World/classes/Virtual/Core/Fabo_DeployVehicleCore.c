@@ -42,7 +42,7 @@ class Fabo_DeployVehicleCore
             return;
         }
 
-        if (IsSurfaceWater(data.param1))
+        if (ConfigVirtualGarage.GetInstance().SpawnInWater() == 0 && IsSurfaceWater(data.param1))
         {
             NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_garage_title", "#fabo_block_area", "VirtualGarage/data/images/vglogo.paa");
             return;

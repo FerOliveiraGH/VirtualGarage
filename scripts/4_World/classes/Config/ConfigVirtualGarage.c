@@ -2,8 +2,10 @@ class ConfigVirtualGarage
 {
     private const string Patch = "$profile:VirtualGarage\\";
     private const string File = "$profile:VirtualGarage\\settings.json";
+    private string version = "1.0.0";
     private int attachDetachWithTool = 1;
-    private int limit;
+    private int limit = -1;
+    private int spawnInWater = 0;
 
     void ConfigVirtualGarage()
     {
@@ -13,18 +15,15 @@ class ConfigVirtualGarage
                 MakeDirectory(Patch);
 
             if (!FileExist(File))
-            {
-                limit = 2;
                 Store();
-            }
-
-            if (!limit)
-            {
-                limit = 2;
-                Store();
-            }
 
             Load();
+
+            if (version != "1.0.0")
+            {
+                version = "1.0.0";
+                Store();
+            }
         }
     }
 
@@ -36,6 +35,11 @@ class ConfigVirtualGarage
     int Limit()
     {
         return limit;
+    }
+
+    int SpawnInWater()
+    {
+        return spawnInWater;
     }
 
     private void Store()
