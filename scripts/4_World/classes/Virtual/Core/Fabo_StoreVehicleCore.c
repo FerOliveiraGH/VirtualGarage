@@ -89,7 +89,7 @@ class Fabo_StoreVehicleCore
         vehicle.Delete();
         vehicle.SetSynchDirty();
 
-        GetRPCManager().SendRPC("VirtualGarage", "UpdateListVehicleRPC",  new Param1<int>(data.param1), true, NULL);
+        GetRPCManager().SendRPC("VirtualGarage", "UpdateListVehicleRPC",  new Param1<int>(data.param1), true, sender);
 
         NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_garage_title", "#fabo_success_storage", "VirtualGarage/data/images/vglogo.paa");
     }

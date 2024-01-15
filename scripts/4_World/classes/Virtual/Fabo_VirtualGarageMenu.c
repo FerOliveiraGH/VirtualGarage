@@ -186,18 +186,20 @@ class Fabo_VirtualGarageMenu extends UIScriptedMenu
     void StoreVehicle()
     {
         int LowUID = GetLowSteamID(GetGame().GetUserManager().GetTitleInitiator().GetUid());
+        PlayerIdentity identity = GetGame().GetPlayer().GetIdentity();
 
-        GetRPCManager().SendRPC("VirtualGarage", "StoreVehicleRPC",  new Param2<int, CarScript>(LowUID, m_CarInPark), true, NULL);
+        GetRPCManager().SendRPC("VirtualGarage", "StoreVehicleRPC",  new Param2<int, CarScript>(LowUID, m_CarInPark), true, identity);
     }
 
     void DeployVehicle()
     {
         int LowUID = GetLowSteamID(GetGame().GetUserManager().GetTitleInitiator().GetUid());
+        PlayerIdentity identity = GetGame().GetPlayer().GetIdentity();
 
         if (m_CarInPark)
             m_SelectedVehicle--;
 
-        GetRPCManager().SendRPC("VirtualGarage", "DeployVehicleRPC",  new Param4<vector, vector, int, int>(m_ParkingPos, m_ParkingOri, LowUID, m_SelectedVehicle), true, NULL);
+        GetRPCManager().SendRPC("VirtualGarage", "DeployVehicleRPC",  new Param4<vector, vector, int, int>(m_ParkingPos, m_ParkingOri, LowUID, m_SelectedVehicle), true, identity);
     }
 
     int GetLowSteamID(string SteamID64)

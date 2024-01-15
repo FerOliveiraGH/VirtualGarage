@@ -66,7 +66,7 @@ class Fabo_OpenMenuAction: ActionInteractBase
 		player.m_Fabo_VirtualGarageMenu.m_ParkingOri = Ori;
 
         int LowUID = player.m_Fabo_VirtualGarageMenu.GetLowSteamID(GetGame().GetUserManager().GetTitleInitiator().GetUid());
-        GetRPCManager().SendRPC("VirtualGarage", "GetListVehicleRPC",  new Param1<int>(LowUID), true, NULL);
+        GetRPCManager().SendRPC("VirtualGarage", "GetListVehicleRPC",  new Param1<int>(LowUID), true, player.GetIdentity());
 	}
 
 	void OpenGarageMenu(Object obj)
@@ -89,6 +89,10 @@ class Fabo_OpenMenuAction: ActionInteractBase
             return;
 
         PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
+
+        if (player.GetIdentity().GetId() != sender.GetId())
+            return;
+
         player.m_Fabo_VirtualGarageMenu.SetResponseData(data.param1, getObjectPosition(Pos, Dir), Ori);
         player.m_Fabo_VirtualGarageMenu.UIHandle();
     }
@@ -102,7 +106,7 @@ class Fabo_OpenMenuAction: ActionInteractBase
         if (!ctx.Read(data))
             return;
 
-        GetRPCManager().SendRPC("VirtualGarage", "GetListVehicleRPC",  new Param1<int>(data.param1), true, NULL);
+        GetRPCManager().SendRPC("VirtualGarage", "GetListVehicleRPC",  new Param1<int>(data.param1), true, sender);
     }
 
     vector getObjectPosition(vector pos, vector dir)

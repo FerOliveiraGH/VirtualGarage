@@ -53,7 +53,7 @@ class Fabo_DeployVehicleCore
 
         Fabo_CreateVehicle(data.param1, data.param2, data.param3, vehicleId);
 
-        GetRPCManager().SendRPC("VirtualGarage", "UpdateListVehicleRPC",  new Param1<int>(data.param3), true, NULL);
+        GetRPCManager().SendRPC("VirtualGarage", "UpdateListVehicleRPC",  new Param1<int>(data.param3), true, sender);
 
         NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_garage_title", "#fabo_success_recovered", "VirtualGarage/data/images/vglogo.paa");
     }

@@ -39,7 +39,7 @@ class Fabo_ListGarageCore
             typeVehicles.Insert(fabo_VirtualVehicle.GetType());
         }
 
-        GetRPCManager().SendRPC("VirtualGarage", "SetListVehicleRPC",  new Param1<array<string>>(typeVehicles), true, NULL);
+        GetRPCManager().SendRPC("VirtualGarage", "SetListVehicleRPC",  new Param1<array<string>>(typeVehicles), true, sender);
     }
 }
 
