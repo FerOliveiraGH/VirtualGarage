@@ -32,19 +32,19 @@ class Fabo_DeployVehicleCore
 
         if (!vehicleId)
         {
-            NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_garage_title", "#fabo_vehicle_not_found", "VirtualGarage/data/images/vglogo.paa");
+            NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_virtual_garage_title", "#fabo_vehicle_not_found", "VirtualGarage/data/images/vglogo.paa");
             return;
         }
 
         if (IsColliding(data.param1, data.param2))
         {
-            NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_garage_title", "#fabo_block_area", "VirtualGarage/data/images/vglogo.paa");
+            NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_virtual_garage_title", "#fabo_block_area", "VirtualGarage/data/images/vglogo.paa");
             return;
         }
 
         if (ConfigVirtualGarage.GetInstance().SpawnInWater() == 0 && IsSurfaceWater(data.param1))
         {
-            NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_garage_title", "#fabo_block_area", "VirtualGarage/data/images/vglogo.paa");
+            NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_virtual_garage_title", "#fabo_block_area", "VirtualGarage/data/images/vglogo.paa");
             return;
         }
 
@@ -55,7 +55,7 @@ class Fabo_DeployVehicleCore
 
         GetRPCManager().SendRPC("VirtualGarage", "UpdateListVehicleRPC",  new Param1<int>(data.param3), true, sender);
 
-        NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_garage_title", "#fabo_success_recovered", "VirtualGarage/data/images/vglogo.paa");
+        NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_virtual_garage_title", "#fabo_success_recovered", "VirtualGarage/data/images/vglogo.paa");
     }
 
     bool IsColliding(vector position, vector orientation)

@@ -32,21 +32,18 @@ class Fabo_VirtualGarageMenu extends UIScriptedMenu
 
     void Show(bool show)
     {
+        GetGame().GetUIManager().ShowUICursor(show);
+        GetGame().GetMission().GetHud().Show(!show);
+
         if (!show)
         {
             GetGame().GetInput().ResetGameFocus();
-            GetGame().GetUIManager().ShowUICursor(show);
-
-            GetGame().GetMission().GetHud().Show(!show);
             OnHide();
         }
         else
         {
             int focus = 1;
             GetGame().GetInput().ChangeGameFocus(focus);
-            GetGame().GetUIManager().ShowUICursor(show);
-
-            GetGame().GetMission().GetHud().Show(!show);
             OnShow();
         }
 
