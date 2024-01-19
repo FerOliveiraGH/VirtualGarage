@@ -1,131 +1,169 @@
 class Fabo_VirtualGarageMenu extends UIScriptedMenu
 {
-    private   ButtonWidget      m_BttnParkIn;
-    private   ButtonWidget      m_BttnParkOut;
-    private   ButtonWidget      m_ButtonClose;
-    private   TextListboxWidget m_GarageList;
-    private   ImageWidget       m_ParkingStatus;
-    private   TextWidget        m_ParkingText;
+    private Widget mainLayout;
 
-    private   ItemPreviewWidget m_MainItemPreview;
+    private ImageWidget m_ParkingStatus;
+    private TextWidget m_ParkingText;
 
-              vector            m_ParkingPos;
-              vector            m_ParkingDir;
-              vector            m_ParkingOri;
-              int               m_LowUID;
+    private TextListboxWidget m_VirtualGarageList;
+    private ItemPreviewWidget m_PrincipalItemVisual;
 
-    private   ref TStringArray  m_VehiclesName;
-    private   ref TStringArray  m_VehiclesListName;
+    private ButtonWidget m_ButtonStoreVehicle;
+    private ButtonWidget m_ButtonGetVehicle;
+    private ButtonWidget m_ButtonClose;
 
-    private   CarScript         m_CarInPark;
+    private ref TStringArray m_VehiclesName;
+    private ref TStringArray m_VehiclesListName;
+    private EntityAI m_ItemVisual;
 
-    private   int               m_SelectedVehicle;
+    private CarScript m_VehicleParking;
+    private int m_VehicleSelected;
 
-    private   EntityAI          m_previewItem;
+    vector m_ParkingPosition;
+    vector m_ParkingDirection;
+    vector m_ParkingOrientation;
 
     void Fabo_VirtualGarageMenu()
     {
-        m_CarInPark = NULL;
-        m_VehiclesName = new TStringArray;
-        m_VehiclesListName = new TStringArray;
+        m_VehiclesListName = new array<string>;
+        m_VehiclesName = new array<string>;
+        m_VehicleParking = NULL;
     }
 
-    void Show(bool rep)
+    void Show(bool show)
     {
-        if(rep)
+        if (!show)
         {
-            GetGame().GetInput().ChangeGameFocus(1);
-            GetGame().GetUIManager().ShowUICursor(true);
-            GetGame().GetMission().GetHud().Show(false);
-            OnShow();
+            GetGame().GetInput().ResetGameFocus();
+            GetGame().GetUIManager().ShowUICursor(show);
+
+            GetGame().GetMission().GetHud().Show(!show);
+            OnHide();
         }
         else
         {
-            GetGame().GetInput().ResetGameFocus();
-            GetGame().GetUIManager().ShowUICursor(false);
-            GetGame().GetMission().GetHud().Show(true);
-            OnHide();
+            int focus = 1;
+            GetGame().GetInput().ChangeGameFocus(focus);
+            GetGame().GetUIManager().ShowUICursor(show);
+
+            GetGame().GetMission().GetHud().Show(!show);
+            OnShow();
         }
 
-        layoutRoot.Show(rep);
+        mainLayout.Show(show);
     }
 
     override void OnShow()
     {
         super.OnShow();
-        PPEffects.SetBlurMenu(0.5);
-        GetGame().GetInput().ChangeGameFocus(1);
-        SetFocus( layoutRoot );
+
+        float blur = 0.5;
+        PPEffects.SetBlurMenu(blur);
+
+        int focus = 1;
+        GetGame().GetInput().ChangeGameFocus(focus);
+
+        SetFocus( mainLayout );
     }
 
     override void OnHide()
     {
         super.OnHide();
-        PPEffects.SetBlurMenu(0);
+
+        float blur = 0.0;
+        PPEffects.SetBlurMenu(blur);
+
         GetGame().GetInput().ResetGameFocus();
 
-        if(m_previewItem)
-            GetGame().ObjectDelete(m_previewItem);
+        if (m_ItemVisual)
+            GetGame().ObjectDelete(m_ItemVisual);
 
         Close();
     }
 
     override Widget Init()
     {
-        layoutRoot = GetGame().GetWorkspace().CreateWidgets( "VirtualGarage/gui/Fabo_VirtualGarageUI.layout" );
-        m_BttnParkIn = ButtonWidget.Cast( layoutRoot.FindAnyWidget( "BttnParkIn" ) );
-        m_BttnParkOut = ButtonWidget.Cast( layoutRoot.FindAnyWidget( "BttnParkOut" ) );
-        m_ButtonClose = ButtonWidget.Cast( layoutRoot.FindAnyWidget( "ButtonClose" ) );
-        m_GarageList = TextListboxWidget.Cast( layoutRoot.FindAnyWidget( "GarageList" ) );
-        m_ParkingStatus  = ImageWidget.Cast(layoutRoot.FindAnyWidget( "ParkingStatus" ));
-        m_ParkingText  = TextWidget.Cast(layoutRoot.FindAnyWidget( "ParkingText" ));
+        mainLayout = GetGame().GetWorkspace().CreateWidgets( "VirtualGarage/gui/Fabo_VirtualGarageUI.layout" );
 
-        layoutRoot.Show(false);
+        m_VirtualGarageList = TextListboxWidget.Cast( mainLayout.FindAnyWidget( "GarageList" ) );
 
-        return layoutRoot;
+        m_ButtonStoreVehicle = ButtonWidget.Cast( mainLayout.FindAnyWidget( "ButtonStoreVehicle" ) );
+        m_ButtonGetVehicle = ButtonWidget.Cast( mainLayout.FindAnyWidget( "ButtonGetVehicle" ) );
+        m_ButtonClose = ButtonWidget.Cast( mainLayout.FindAnyWidget( "ButtonClose" ) );
+
+        m_ParkingStatus  = ImageWidget.Cast(mainLayout.FindAnyWidget( "ParkingStatus" ));
+        m_ParkingText  = TextWidget.Cast(mainLayout.FindAnyWidget( "ParkingText" ));
+
+        mainLayout.Show(false);
+
+        return mainLayout;
     }
 
-    static CarScript CheckForCarAtPos(vector position)
+    static CarScript getVehicleParking(vector position)
 	{
-		array<Object> objects = new array<Object>;
-		array<CargoBase> proxyCargos = new array<CargoBase>;
-		GetGame().GetObjectsAtPosition(position, 3, objects, proxyCargos);
+	    int radius = 3;
 		CarScript car;
-		if (objects)
+
+		array<Object> items = new array<Object>;
+		array<CargoBase> cargoBase = new array<CargoBase>;
+
+		GetGame().GetObjectsAtPosition(position, radius, items, cargoBase);
+
+		foreach(EntityAI item: items)
 		{
-			for (int i = 0; i < objects.Count(); i++ )
-			{
-				if (Class.CastTo( car, objects.Get(i) ) )
-                    return car;
-			}
+		    if (Class.CastTo(car, item))
+		        return car;
 		}
+
 		return NULL;
 	}
 
-    void UIHandle()
+    void GetListVehicles()
     {
-        m_SelectedVehicle = -1;
-        m_GarageList.ClearItems();
-        m_VehiclesListName.Clear();
+        ClearList();
 
-        m_CarInPark = CheckForCarAtPos(m_ParkingPos);
-        if (m_CarInPark)
+        m_VehicleParking = getVehicleParking(m_ParkingPosition);
+
+        ChangeListWithParking(m_VehicleParking);
+
+        ChangeParkingStatus(m_VehicleParking);
+
+        ClearVehicleSelected();
+    }
+
+    void ClearList()
+    {
+        m_VehiclesListName.Clear();
+        m_VirtualGarageList.ClearItems();
+        m_VehicleSelected = -1;
+    }
+
+    void ChangeListWithParking(CarScript m_VehicleParking)
+    {
+        if (m_VehicleParking)
         {
-            m_GarageList.AddItem(m_CarInPark.GetType(), NULL, 0);
-            m_GarageList.SetItemColor(0, 0, ARGB(255, 191, 48, 48) );
-            m_VehiclesListName.Insert(m_CarInPark.GetType());
+            m_VirtualGarageList.AddItem(m_VehicleParking.GetType(), NULL, 0);
+            m_VirtualGarageList.SetItemColor(0, 0, ARGB(255, 191, 48, 48));
+
+            m_VehiclesListName.Insert(m_VehicleParking.GetType());
         }
 
-        for (int i=0;i<m_VehiclesName.Count();i++)
+        for (int i = 0; i < m_VehiclesName.Count(); i++)
         {
             int pos = i;
-            if(m_CarInPark)pos++;
-            m_GarageList.AddItem(m_VehiclesName[i], NULL, 0);
-            m_GarageList.SetItemColor(pos, 0, ARGB(255, 255, 255, 255) );
+            if (m_VehicleParking)
+                pos++;
+
+            m_VirtualGarageList.AddItem(m_VehiclesName[i], NULL, 0);
+            m_VirtualGarageList.SetItemColor(pos, 0, ARGB(255, 255, 255, 255));
+
             m_VehiclesListName.Insert(m_VehiclesName[i]);
         }
+    }
 
-        if (m_CarInPark)
+    void ChangeParkingStatus(CarScript m_VehicleParking)
+    {
+        if (m_VehicleParking)
         {
             m_ParkingStatus.SetColor(ARGB(255,191,48,48));
             m_ParkingText.SetText("#fabo_parking_unavailability");
@@ -135,35 +173,39 @@ class Fabo_VirtualGarageMenu extends UIScriptedMenu
             m_ParkingStatus.SetColor(ARGB(255,0,255,0));
             m_ParkingText.SetText("#fabo_parking_availability");
         }
-
-        if (m_VehiclesListName.Count() > 0)
-        {
-            m_SelectedVehicle = 0;
-            UpdateVehiclePreview(m_VehiclesListName[m_SelectedVehicle]);
-        }
     }
 
-    void SetResponseData(TStringArray vehicles, vector parkpos, vector parkori)
+    void ClearVehicleSelected()
+    {
+        if (m_VehiclesListName.Count() <= 0)
+            return;
+
+        m_VehicleSelected = 0;
+
+        ChangeVehicleVisual(m_VehiclesListName[m_VehicleSelected]);
+    }
+
+    void SetDataVehicle(array<string> vehicles, vector pos, vector ori)
     {
         m_VehiclesName.Clear();
         m_VehiclesName = vehicles;
-        m_ParkingPos = parkpos;
-        m_ParkingOri = parkori;
+        m_ParkingPosition = pos;
+        m_ParkingOrientation = ori;
     }
 
     override bool OnClick (Widget w, int x, int y, int button)
     {
         switch(w)
         {
-            case m_BttnParkIn: StoreVehicle();
+            case m_ButtonStoreVehicle: StoreVehicle();
             return true;
             break;
 
-            case m_BttnParkOut: DeployVehicle();
+            case m_ButtonGetVehicle: DeployVehicle();
             return true;
             break;
 
-            case m_GarageList: SelectVehicle();
+            case m_VirtualGarageList: SelectVehicle();
             return true;
             break;
 
@@ -176,69 +218,83 @@ class Fabo_VirtualGarageMenu extends UIScriptedMenu
 
     void SelectVehicle()
     {
-        m_SelectedVehicle = m_GarageList.GetSelectedRow();
+        m_VehicleSelected = m_VirtualGarageList.GetSelectedRow();
 
-        if(m_SelectedVehicle == -1)return;
+        if (m_VehicleSelected == -1)
+            return;
 
-        UpdateVehiclePreview(m_VehiclesListName[m_SelectedVehicle]);
+        ChangeVehicleVisual(m_VehiclesListName[m_VehicleSelected]);
     }
 
     void StoreVehicle()
     {
-        int LowUID = GetLowSteamID(GetGame().GetUserManager().GetTitleInitiator().GetUid());
+        int uniquePlayerId = GetPlayerUniqueId(GetGame().GetUserManager().GetTitleInitiator().GetUid());
         PlayerIdentity identity = GetGame().GetPlayer().GetIdentity();
 
-        GetRPCManager().SendRPC("VirtualGarage", "StoreVehicleRPC",  new Param2<int, CarScript>(LowUID, m_CarInPark), true, identity);
+        GetRPCManager().SendRPC("VirtualGarage", "StoreVehicleRPC",  new Param2<int, CarScript>(uniquePlayerId, m_VehicleParking), true, identity);
     }
 
     void DeployVehicle()
     {
-        int LowUID = GetLowSteamID(GetGame().GetUserManager().GetTitleInitiator().GetUid());
+        int uniquePlayerId = GetPlayerUniqueId(GetGame().GetUserManager().GetTitleInitiator().GetUid());
         PlayerIdentity identity = GetGame().GetPlayer().GetIdentity();
 
-        if (m_CarInPark)
-            m_SelectedVehicle--;
+        if (m_VehicleParking)
+            m_VehicleSelected--;
 
-        GetRPCManager().SendRPC("VirtualGarage", "DeployVehicleRPC",  new Param4<vector, vector, int, int>(m_ParkingPos, m_ParkingOri, LowUID, m_SelectedVehicle), true, identity);
+        GetRPCManager().SendRPC("VirtualGarage", "DeployVehicleRPC",  new Param4<vector, vector, int, int>(m_ParkingPosition, m_ParkingOrientation, uniquePlayerId, m_VehicleSelected), true, identity);
     }
 
-    int GetLowSteamID(string SteamID64)
+    int GetPlayerUniqueId(string FullIdSteam)
 	{
-		string temp_ID="";
-		for(int j = 8; j<17; j++)
-		{
-			temp_ID+=SteamID64.Get(j);
-		}
-		return temp_ID.ToInt();
+		string uniqueId = "";
+
+		for (int i = 8; i < 17; i++)
+			uniqueId += FullIdSteam.Get(i);
+
+		return uniqueId.ToInt();
 	}
 
-    void UpdateVehiclePreview(string itemType)
+    void ChangeVehicleVisual(string type)
     {
-        string tempstr = itemType;
-        tempstr.ToLower();
-        if ( !m_MainItemPreview )
-        {
-            Widget preview_frame = layoutRoot.FindAnyWidget("VehiclePreview");
+        GetVehicleVisual();
 
-            if ( preview_frame )
-            {
-                float width;
-                float height;
-                preview_frame.GetSize(width, height);
+        SetVehicleVisual(type);
+    }
 
-                m_MainItemPreview = ItemPreviewWidget.Cast( GetGame().GetWorkspace().CreateWidget(ItemPreviewWidgetTypeID, 0, 0, 1, 1, WidgetFlags.VISIBLE, ARGB(255, 255, 255, 255), 10, preview_frame) );
-            }
-        }
+    void GetVehicleVisual()
+    {
+        if ( m_PrincipalItemVisual )
+           return;
 
-        if ( m_previewItem )
-            GetGame().ObjectDelete( m_previewItem );
+        Widget VehicleVisual = mainLayout.FindAnyWidget("VehicleVisual");
 
-        m_previewItem = EntityAI.Cast(GetGame().CreateObject( itemType, "0 0 0", true, false, true ));
-        if(!m_previewItem)return;
+        if (!VehicleVisual)
+            return;
 
-        m_MainItemPreview.SetItem(m_previewItem);
-        m_MainItemPreview.SetModelPosition( Vector( 0, 0, 0.5 ) );
-        m_MainItemPreview.SetModelOrientation( vector.Zero );
-        m_MainItemPreview.SetView( m_previewItem.GetViewIndex() );
+        float width;
+        float height;
+        VehicleVisual.GetSize(width, height);
+
+        m_PrincipalItemVisual = ItemPreviewWidget.Cast( GetGame().GetWorkspace().CreateWidget(ItemPreviewWidgetTypeID, 0, 0, 1, 1, WidgetFlags.VISIBLE, ARGB(255, 255, 255, 255), 10, VehicleVisual) );
+    }
+
+    void SetVehicleVisual(string type)
+    {
+        if (m_ItemVisual)
+            GetGame().ObjectDelete( m_ItemVisual );
+
+        vector vectorZero = Vector(0, 0, 0);
+
+        m_ItemVisual = EntityAI.Cast(GetGame().CreateObject( type, vectorZero, true, false, true ));
+
+        if (!m_ItemVisual)
+            return;
+
+        m_PrincipalItemVisual.SetItem(m_ItemVisual);
+        m_PrincipalItemVisual.SetView(m_ItemVisual.GetViewIndex());
+
+        m_PrincipalItemVisual.SetModelPosition(Vector(0, 0, 0.5));
+        m_PrincipalItemVisual.SetModelOrientation(vectorZero);
     }
 };

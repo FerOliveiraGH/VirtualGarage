@@ -54,29 +54,31 @@ class Fabo_OpenMenuAction: ActionInteractBase
 
     override void OnStartClient(ActionData action_data)
     {
-		OpenGarageMenu(action_data.m_Target.GetObject());
+		OpenVirtualGarageMenu(action_data.m_Target.GetObject());
     }
 
-	void InitGarageMenu(PlayerBase player)
+	void StartGarageMenu(PlayerBase player)
 	{
 		player.m_Fabo_VirtualGarageMenu = new Fabo_VirtualGarageMenu;
 		player.m_Fabo_VirtualGarageMenu.Init();
-		player.m_Fabo_VirtualGarageMenu.m_ParkingPos = Pos;
-		player.m_Fabo_VirtualGarageMenu.m_ParkingDir = Dir;
-		player.m_Fabo_VirtualGarageMenu.m_ParkingOri = Ori;
+		player.m_Fabo_VirtualGarageMenu.m_ParkingPosition = Pos;
+		player.m_Fabo_VirtualGarageMenu.m_ParkingDirection = Dir;
+		player.m_Fabo_VirtualGarageMenu.m_ParkingOrientation = Ori;
 
-        int LowUID = player.m_Fabo_VirtualGarageMenu.GetLowSteamID(GetGame().GetUserManager().GetTitleInitiator().GetUid());
-        GetRPCManager().SendRPC("VirtualGarage", "GetListVehicleRPC",  new Param1<int>(LowUID), true, player.GetIdentity());
+        string uid = GetGame().GetUserManager().GetTitleInitiator().GetUid();
+        int uniquePlayerId = player.m_Fabo_VirtualGarageMenu.GetPlayerUniqueId(uid);
+
+        GetRPCManager().SendRPC("VirtualGarage", "GetListVehicleRPC",  new Param1<int>(uniquePlayerId), true, player.GetIdentity());
 	}
 
-	void OpenGarageMenu(Object obj)
+	void OpenVirtualGarageMenu(Object obj)
 	{
       	PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
-		if ( g_Game.GetUIManager().GetMenu() == NULL )
-		{
-			InitGarageMenu(player);
-			GetGame().GetUIManager().ShowScriptedMenu( player.m_Fabo_VirtualGarageMenu, NULL );
-		}
+        if (g_Game.GetUIManager().GetMenu() != NULL)
+            return;
+
+        StartGarageMenu(player);
+        GetGame().GetUIManager().ShowScriptedMenu(player.m_Fabo_VirtualGarageMenu, NULL);
 	}
 
 	void SetListVehicleRPC( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
@@ -93,8 +95,8 @@ class Fabo_OpenMenuAction: ActionInteractBase
         if (player.GetIdentity().GetId() != sender.GetId())
             return;
 
-        player.m_Fabo_VirtualGarageMenu.SetResponseData(data.param1, getObjectPosition(Pos, Dir), Ori);
-        player.m_Fabo_VirtualGarageMenu.UIHandle();
+        player.m_Fabo_VirtualGarageMenu.SetDataVehicle(data.param1, getObjectPosition(Pos, Dir), Ori);
+        player.m_Fabo_VirtualGarageMenu.GetListVehicles();
     }
 
     void UpdateListVehicleRPC( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )

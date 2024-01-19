@@ -1,4 +1,4 @@
-FrameWidgetClass GarageMainFrame {
+FrameWidgetClass VirtualGarageMainFrame {
  position 0 0
  size 1 1
  halign center_ref
@@ -113,7 +113,7 @@ FrameWidgetClass GarageMainFrame {
             }
            }
           }
-          ItemPreviewWidgetClass VehiclePreview {
+          ItemPreviewWidgetClass VehicleVisual {
            ignorepointer 1
            position -0.45536 0
            size 1.00028 0.49926
@@ -152,7 +152,7 @@ FrameWidgetClass GarageMainFrame {
            Columns 1
            Rows 1
            {
-            GridSpacerWidgetClass GridStatut {
+            GridSpacerWidgetClass GridStatus {
              ignorepointer 1
              position 0.023 0.021
              size 0.111 -0.4368
@@ -226,7 +226,7 @@ FrameWidgetClass GarageMainFrame {
            "Size To Content V" 1
            Columns 1
            {
-            PanelWidgetClass BuyPanelWidget {
+            PanelWidgetClass GetVehicleWidget {
              visible 1
              ignorepointer 1
              color 0 0 0 0.7843
@@ -238,7 +238,7 @@ FrameWidgetClass GarageMainFrame {
              vexactsize 1
              style rover_sim_colorable
              {
-              ButtonWidgetClass BttnParkOut {
+              ButtonWidgetClass ButtonGetVehicle {
                visible 1
                color 0.7333 0.7333 0.7333 1
                position 0 0
@@ -250,7 +250,7 @@ FrameWidgetClass GarageMainFrame {
                vexactsize 0
                style OldStyle
                {
-                TextWidgetClass BttnBuy_label {
+                TextWidgetClass ButtonGetText {
                  ignorepointer 1
                  position 0 0
                  size 1 1
@@ -260,7 +260,7 @@ FrameWidgetClass GarageMainFrame {
                  vexactpos 0
                  hexactsize 0
                  vexactsize 0
-                 text "#fabo_bttn_parkout"
+                 text "#fabo_button_get_vehicle"
                  font "gui/fonts/etelkatextpro22"
                  "text halign" center
                  "text valign" center
@@ -269,7 +269,7 @@ FrameWidgetClass GarageMainFrame {
               }
              }
             }
-            PanelWidgetClass SellPanelWidget {
+            PanelWidgetClass StoreVehicleWidget {
              ignorepointer 1
              color 0 0 0 0.7843
              position 0 0
@@ -280,7 +280,7 @@ FrameWidgetClass GarageMainFrame {
              vexactsize 1
              style rover_sim_colorable
              {
-              ButtonWidgetClass BttnParkIn {
+              ButtonWidgetClass ButtonStoreVehicle {
                visible 1
                color 0.7333 0.7333 0.7333 1
                position 0 0
@@ -293,7 +293,7 @@ FrameWidgetClass GarageMainFrame {
                vexactsize 0
                style OldStyle
                {
-                TextWidgetClass BttnSell_label {
+                TextWidgetClass ButtonStoreText {
                  ignorepointer 1
                  position 0 0
                  size 1 1
@@ -303,7 +303,7 @@ FrameWidgetClass GarageMainFrame {
                  vexactpos 0
                  hexactsize 0
                  vexactsize 0
-                 text "#fabo_bttn_parkin"
+                 text "#fabo_button_store_vehicle"
                  font "gui/fonts/etelkatextpro22"
                  "text halign" center
                  "text valign" center
@@ -333,7 +333,7 @@ FrameWidgetClass GarageMainFrame {
      vexactsize 0
      draggable 0
      style Bold
-     text "#fabo_garage_title"
+     text "#fabo_virtual_garage_title"
      font "gui/fonts/etelkatextpro28"
      "text color" 0.6196 0.6196 0.6196 1
      "exact text" 0
