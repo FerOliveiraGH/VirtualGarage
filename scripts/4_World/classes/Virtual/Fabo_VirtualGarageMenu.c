@@ -152,7 +152,7 @@ class Fabo_VirtualGarageMenu extends UIScriptedMenu
                 pos++;
 
             m_VirtualGarageList.AddItem(m_VehiclesName[i], NULL, 0);
-            m_VirtualGarageList.SetItemColor(pos, 0, ARGB(255, 255, 255, 255));
+            m_VirtualGarageList.SetItemColor(pos, 0, ARGB(255, 50, 50, 50));
 
             m_VehiclesListName.Insert(m_VehiclesName[i]);
         }

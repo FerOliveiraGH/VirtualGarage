@@ -10,8 +10,8 @@ FrameWidgetClass VirtualGarageMainFrame {
  {
   PanelWidgetClass PanelWidget0 {
    ignorepointer 1
-   position -0.00675 -0.00164
-   size 0.53939 0.71086
+   position 0 0
+   size 0.55 0.7
    halign center_ref
    valign center_ref
    hexactpos 0
@@ -22,50 +22,56 @@ FrameWidgetClass VirtualGarageMainFrame {
    {
     PanelWidgetClass LayoutBackground {
      ignorepointer 1
-     color 0 0 0 0.6667
-     position -0.0002 -0.00114
-     size 0.99481 0.99008
+     color 0.8627 0.8627 0.8627 0.549
+     position 0 0
+     size 1 1
      halign center_ref
      valign center_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
+     scaled 1
      scriptclass ""
-     style rover_sim_colorable
+     style DayZDefaultPanel
      {
       GridSpacerWidgetClass Grid {
        ignorepointer 1
-       position 0 0.05272
-       size 0.963 1.70117
+       position 0 0.05
+       size 0.95 0.8
        halign center_ref
        valign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
+       "Size To Content H" 1
        "Size To Content V" 1
        Columns 1
+       Rows 2
        {
-        GridSpacerWidgetClass GridSpacerWidget1 {
+        GridSpacerWidgetClass VisualGridSpacerWidget {
          ignorepointer 1
-         position 0 -0.02148
-         size 0.033 0.77497
+         color 0.7843 0.7843 0.7843 0.7059
+         size 1 0.77
          halign center_ref
          valign center_ref
          hexactpos 0
          vexactpos 0
          hexactsize 0
          vexactsize 0
+         style DayZDefaultPanel
          "Size To Content H" 1
          "Size To Content V" 1
+         content_halign center
+         content_valign center
          Columns 2
          Rows 1
          {
-          GridSpacerWidgetClass GridSpacerWidget2 {
+          GridSpacerWidgetClass ListGridSpacerWidget {
            ignorepointer 1
-           position 0.008 0.63822
-           size 354 0.25178
+           position 0 0
+           size 300 0.48
            hexactpos 0
            vexactpos 0
            hexactsize 1
@@ -77,9 +83,8 @@ FrameWidgetClass VirtualGarageMainFrame {
             TextWidgetClass TextListTitle {
              visible 1
              ignorepointer 1
-             color 0.8588 0.8588 0.8588 1
-             position 0 0.046
-             size 0.4562 0.11871
+             color 0.1961 0.1961 0.1961 1
+             size 1 0.25
              halign center_ref
              hexactpos 0
              vexactpos 0
@@ -87,7 +92,7 @@ FrameWidgetClass VirtualGarageMainFrame {
              vexactsize 0
              draggable 0
              text "#fabo_list_title"
-             font "gui/fonts/etelkatextpro22"
+             font "gui/fonts/metron-bold22"
              "text color" 0.6196 0.6196 0.6196 1
              "exact text" 0
              "size to text h" 0
@@ -97,43 +102,61 @@ FrameWidgetClass VirtualGarageMainFrame {
             }
             TextListboxWidgetClass GarageList {
              visible 1
-             position 0 1.0693
-             size -0.24933 1.87731
-             valign center_ref
+             color 0 0 0 1
+             size 1 1.87
+             halign center_ref
              hexactpos 0
              vexactpos 0
              hexactsize 0
              vexactsize 0
-             style Default
+             scaled 1
+             style debugUI
              "title visible" 0
              colums ""
              lines 10
              "highlight row" 1
-             font "gui/fonts/etelkatextpro16"
+             font "gui/fonts/metron16"
+             "text color" 0.1961 0.1961 0.1961 1
+             "disabled text color" 0.1569 0.1569 0.1569 1
             }
            }
           }
-          ItemPreviewWidgetClass VehicleVisual {
+          GridSpacerWidgetClass PreviewGridSpacerWidget {
            ignorepointer 1
-           position -0.45536 0
-           size 1.00028 0.49926
-           halign right_ref
-           valign center_ref
+           color 0.3137 0.3137 0.3137 1
+           position 0 0
+           size 1 1
            hexactpos 0
            vexactpos 0
            hexactsize 0
            vexactsize 0
-           scaled 1
-           "force flip enable" 1
-           "force flip" 1
+           "Size To Content H" 1
+           "Size To Content V" 1
+           Columns 1
+           Rows 1
+           {
+            ItemPreviewWidgetClass VehicleVisual {
+             ignorepointer 1
+             size 1 1
+             halign center_ref
+             hexactpos 0
+             vexactpos 0
+             hexactsize 0
+             vexactsize 0
+             scaled 1
+             "force flip enable" 1
+             "force flip" 1
+            }
+           }
           }
          }
         }
-        GridSpacerWidgetClass GridSpacerWidget0 {
+        GridSpacerWidgetClass BottomGridSpacerWidget {
          visible 1
          ignorepointer 1
-         position 0.5442 0.46393
-         size 0.4341 0.40317
+         color 0.7843 0.7843 0.7843 0.7059
+         size 1 0.55
+         halign center_ref
          hexactpos 0
          vexactpos 0
          hexactsize 0
@@ -141,10 +164,11 @@ FrameWidgetClass VirtualGarageMainFrame {
          "Size To Content V" 1
          Rows 1
          {
-          GridSpacerWidgetClass GridSpacerWidget3 {
+          GridSpacerWidgetClass StatusGridSpacerWidget {
            ignorepointer 1
+           color 0.7059 0.7059 0.7059 1
            position 10 10
-           size 48 46.9249
+           size 45 45
            hexactpos 1
            vexactpos 1
            hexactsize 1
@@ -154,13 +178,14 @@ FrameWidgetClass VirtualGarageMainFrame {
            {
             GridSpacerWidgetClass GridStatus {
              ignorepointer 1
-             position 0.023 0.021
-             size 0.111 -0.4368
+             position 0 0
+             size 1 1
              hexactpos 0
              vexactpos 0
              hexactsize 0
              vexactsize 0
              "Size To Content H" 1
+             "Size To Content V" 1
              Columns 2
              Rows 1
              {
@@ -170,15 +195,15 @@ FrameWidgetClass VirtualGarageMainFrame {
                inheritalpha 0
                ignorepointer 1
                color 0 1 0 1
-               position 1.29939 -0.46155
-               size 36 -69
+               position 0 0
+               size 40 40
                valign center_ref
-               hexactpos 0
-               vexactpos 0
+               hexactpos 1
+               vexactpos 1
                hexactsize 1
                vexactsize 1
-               image0 "set:dayz_gui image:circle"
-               mode additive
+               image0 "set:dayz_gui image:square"
+               mode blend
                "src alpha" 1
                "clamp mode" clamp
                "stretch mode" stretch_w_h
@@ -186,24 +211,29 @@ FrameWidgetClass VirtualGarageMainFrame {
               }
               TextWidgetClass ParkingText {
                ignorepointer 1
-               position 0.51963 0.55137
-               size 0.9961 0.41933
+               color 0.1961 0.1961 0.1961 1
+               position 0 0
+               size 1 1
+               valign center_ref
                hexactpos 0
                vexactpos 0
                hexactsize 0
                vexactsize 0
                text "#fabo_parking_availability"
-               font "gui/fonts/etelkatextpro22"
+               font "gui/fonts/metron-bold22"
+               "text offset" 5 0
+               "size to text h" 0
+               "size to text v" 1
                "text valign" center
               }
              }
             }
            }
           }
-          GridSpacerWidgetClass GridSpacerWidget4 {
+          GridSpacerWidgetClass EmptyGridSpacerWidget {
            ignorepointer 1
-           position 0.008 0.06
-           size 0.039 0.329
+           position 0 0
+           size 1 0.9
            hexactpos 0
            vexactpos 0
            hexactsize 0
@@ -211,10 +241,10 @@ FrameWidgetClass VirtualGarageMainFrame {
            Columns 1
            Rows 1
           }
-          GridSpacerWidgetClass GridButtons {
+          GridSpacerWidgetClass ButtonGridSpacerWidget {
            ignorepointer 1
-           position 0.28304 0.01985
-           size 0.37607 5.25812
+           position 0 0
+           size 1 100
            halign center_ref
            valign bottom_ref
            hexactpos 0
@@ -240,18 +270,19 @@ FrameWidgetClass VirtualGarageMainFrame {
              {
               ButtonWidgetClass ButtonGetVehicle {
                visible 1
-               color 0.7333 0.7333 0.7333 1
-               position 0 0
+               color 0.7059 0.7059 0.7059 1
                size 1 1
-               valign center_ref
+               halign center_ref
+               valign bottom_ref
                hexactpos 1
                vexactpos 1
                hexactsize 0
                vexactsize 0
-               style OldStyle
+               style DayZDefaultButtonNoBorder
                {
                 TextWidgetClass ButtonGetText {
                  ignorepointer 1
+                 color 0.1961 0.1961 0.1961 1
                  position 0 0
                  size 1 1
                  halign center_ref
@@ -260,8 +291,9 @@ FrameWidgetClass VirtualGarageMainFrame {
                  vexactpos 0
                  hexactsize 0
                  vexactsize 0
+                 style Normal
                  text "#fabo_button_get_vehicle"
-                 font "gui/fonts/etelkatextpro22"
+                 font "gui/fonts/metron-bold22"
                  "text halign" center
                  "text valign" center
                 }
@@ -273,28 +305,27 @@ FrameWidgetClass VirtualGarageMainFrame {
              ignorepointer 1
              color 0 0 0 0.7843
              position 0 0
-             size 1 64
+             size 341 64
              hexactpos 1
              vexactpos 1
-             hexactsize 0
+             hexactsize 1
              vexactsize 1
              style rover_sim_colorable
              {
               ButtonWidgetClass ButtonStoreVehicle {
                visible 1
-               color 0.7333 0.7333 0.7333 1
-               position 0 0
+               color 0.7059 0.7059 0.7059 1
                size 1 1
-               halign right_ref
-               valign center_ref
+               halign center_ref
                hexactpos 1
                vexactpos 1
                hexactsize 0
                vexactsize 0
-               style OldStyle
+               style DayZDefaultButtonNoBorder
                {
                 TextWidgetClass ButtonStoreText {
                  ignorepointer 1
+                 color 0.1961 0.1961 0.1961 1
                  position 0 0
                  size 1 1
                  halign center_ref
@@ -304,7 +335,7 @@ FrameWidgetClass VirtualGarageMainFrame {
                  hexactsize 0
                  vexactsize 0
                  text "#fabo_button_store_vehicle"
-                 font "gui/fonts/etelkatextpro22"
+                 font "gui/fonts/metron-bold22"
                  "text halign" center
                  "text valign" center
                 }
@@ -322,7 +353,7 @@ FrameWidgetClass VirtualGarageMainFrame {
     }
     TextWidgetClass TextTitle {
      ignorepointer 1
-     color 0.8588 0.8588 0.8588 1
+     color 0.1961 0.1961 0.1961 1
      position 0.01035 -0.43722
      size 0.45024 0.08061
      halign center_ref
@@ -334,7 +365,7 @@ FrameWidgetClass VirtualGarageMainFrame {
      draggable 0
      style Bold
      text "#fabo_virtual_garage_title"
-     font "gui/fonts/etelkatextpro28"
+     font "gui/fonts/metron-bold28"
      "text color" 0.6196 0.6196 0.6196 1
      "exact text" 0
      "size to text h" 0
@@ -344,7 +375,7 @@ FrameWidgetClass VirtualGarageMainFrame {
     }
     ButtonWidgetClass ButtonClose {
      color 0.7333 0.7333 0.7333 1
-     position 0.01 0.015
+     position 0.02 0.02
      size 30 30
      halign right_ref
      hexactpos 0
@@ -355,6 +386,7 @@ FrameWidgetClass VirtualGarageMainFrame {
      {
       TextWidgetClass TextClose {
        ignorepointer 1
+       color 0.1569 0.1569 0.1569 1
        position 0 0
        size 1 1
        hexactpos 0
@@ -362,7 +394,7 @@ FrameWidgetClass VirtualGarageMainFrame {
        hexactsize 0
        vexactsize 0
        text "X"
-       font "gui/fonts/etelkatextpro22"
+       font "gui/fonts/metron-bold22"
        "text halign" center
        "text valign" center
       }
