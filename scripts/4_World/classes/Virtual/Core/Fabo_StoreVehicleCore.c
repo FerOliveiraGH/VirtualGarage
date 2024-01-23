@@ -43,8 +43,8 @@ class Fabo_StoreVehicleCore
         }
         #endif
 
-        #ifdef ClaimVehicles
-        if (!vehicle.IsOwned())
+        #ifdef ClaimVehicles_Mod
+        if (!vehicle.IsOwned() || vehicle.GetOwnerID() != sender.GetPlainId())
         {
             NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_virtual_garage_title", "#STR_Action_fabo_virtual_invalid_owner", "VirtualGarage/data/images/vglogo.paa");
             return;
