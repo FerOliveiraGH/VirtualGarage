@@ -18,6 +18,7 @@ class Fabo_CreateVehicle
         obj.Fill(CarFluid.BRAKE, vehicle.GetFluidCapacity(CarFluid.BRAKE));
 
         SetCarLock(vehicle, virtualVehicle);
+        SetOwnerVehicle(vehicle, virtualVehicle);
 
         virtualVehicle.Delete();
     }
@@ -95,6 +96,17 @@ class Fabo_CreateVehicle
             vehicle.SetCarLockPassword(virtualVehicle.GetPassword());
         }
         vehicle.SetSynchDirty();
+        #endif
+    }
+
+    void SetOwnerVehicle(CarScript vehicle, Fabo_VirtualVehicle virtualVehicle)
+    {
+        #ifdef FaboMod
+        if (virtualVehicle.GetOwnerCarID())
+        {
+            vehicle.SetOwnerCarServer(virtualVehicle.GetOwnerCarID(), virtualVehicle.GetOwner());
+            vehicle.SetSynchDirty();
+        }
         #endif
     }
 }

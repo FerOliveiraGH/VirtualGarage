@@ -1,5 +1,7 @@
 class Fabo_VirtualGarageMenu extends UIScriptedMenu
 {
+    static float lastClickTime = 0;
+
     private Widget mainLayout;
 
     private ImageWidget m_ParkingStatus;
@@ -225,6 +227,9 @@ class Fabo_VirtualGarageMenu extends UIScriptedMenu
 
     void StoreVehicle()
     {
+        if (CheckClickRateLimit())
+            return;
+
         int uniquePlayerId = GetPlayerUniqueId(GetGame().GetUserManager().GetTitleInitiator().GetUid());
         PlayerIdentity identity = GetGame().GetPlayer().GetIdentity();
 
@@ -233,6 +238,9 @@ class Fabo_VirtualGarageMenu extends UIScriptedMenu
 
     void DeployVehicle()
     {
+        if (CheckClickRateLimit())
+            return;
+
         int uniquePlayerId = GetPlayerUniqueId(GetGame().GetUserManager().GetTitleInitiator().GetUid());
         PlayerIdentity identity = GetGame().GetPlayer().GetIdentity();
 
@@ -240,6 +248,23 @@ class Fabo_VirtualGarageMenu extends UIScriptedMenu
             m_VehicleSelected--;
 
         GetRPCManager().SendRPC("VirtualGarage", "DeployVehicleRPC",  new Param4<vector, vector, int, int>(m_ParkingPosition, m_ParkingOrientation, uniquePlayerId, m_VehicleSelected), true, identity);
+    }
+
+    bool CheckClickRateLimit()
+    {
+        float currentTime = GetGame().GetTime();
+        int seconds = 1 * 1000;
+
+        if (currentTime - lastClickTime < seconds)
+        {
+            PlayerIdentity identity = GetGame().GetPlayer().GetIdentity();
+            NotificationSystem.AddNotificationExtended(2, "#fabo_virtual_garage_title", "#fabo_wait_a_bit", "VirtualGarage/data/images/vglogo.paa");
+            return true;
+        }
+
+        lastClickTime = currentTime;
+
+        return false;
     }
 
     int GetPlayerUniqueId(string FullIdSteam)

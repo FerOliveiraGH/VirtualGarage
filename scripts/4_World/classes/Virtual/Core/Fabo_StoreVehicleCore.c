@@ -74,7 +74,8 @@ class Fabo_StoreVehicleCore
 
         virtualVehicle.SetType(vehicle.GetType());
         virtualVehicle.SetFuel(vehicle.GetFluidFraction(CarFluid.FUEL));
-        virtualVehicle.SetOwner(sender.GetPlainName());
+        virtualVehicle.SetOwner(sender.GetName());
+        virtualVehicle.SetOwnerCarID(sender.GetId());
 
         #ifdef TraderPlus
         virtualVehicle.SetPassword(vehicle.m_CarLockPassword);

@@ -6,6 +6,7 @@ class Fabo_VirtualVehicle
     private int UniqueID;
     private string Type;
     private int OwnerID;
+    private string OwnerCarID;
     private string Owner;
     private float Fuel;
     private int Password;
@@ -57,6 +58,11 @@ class Fabo_VirtualVehicle
         return this.OwnerID;
     }
 
+    string GetOwnerCarID()
+    {
+        return this.OwnerCarID;
+    }
+
     string GetOwner()
     {
         return this.Owner;
@@ -85,6 +91,11 @@ class Fabo_VirtualVehicle
     void SetOwner(string owner)
     {
         this.Owner = owner;
+    }
+
+    void SetOwnerCarID(string ownerCarID)
+    {
+        this.OwnerCarID = ownerCarID;
     }
 
     void SetPassword(int password)
