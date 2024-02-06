@@ -35,6 +35,12 @@ class Fabo_StoreVehicleCore
             return;
         }
 
+        if (vehicle.GetHealthLevel("") == GameConstants.STATE_RUINED)
+        {
+            NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_virtual_garage_title", "#fabo_vehicle_destroyed", "VirtualGarage/data/images/vglogo.paa");
+            return;
+        }
+
         #ifdef FaboMod
         if (vehicle.GetOwnerCar() != sender.GetId())
         {
