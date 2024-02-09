@@ -48,11 +48,17 @@ class Fabo_DeployVehicleCore
             return;
         }
 
-        fabo_ListGarage.removeVehicleId(data.param4);
-        fabo_ListGarage.Store();
-
         Fabo_CreateVehicle fabo_CreateVehicle = Fabo_CreateVehicle(data.param1, data.param2, data.param3, vehicleId);
         CarScript vehicle = fabo_CreateVehicle.Vehicle;
+
+        if (!vehicle)
+        {
+            NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_virtual_garage_title", "#fabo_failed_recovered", "VirtualGarage/data/images/vglogo.paa");
+            return;
+        }
+
+        fabo_ListGarage.removeVehicleId(data.param4);
+        fabo_ListGarage.Store();
 
         GetRPCManager().SendRPC("VirtualGarage", "UpdateListVehicleRPC",  new Param1<int>(data.param3), true, sender);
 

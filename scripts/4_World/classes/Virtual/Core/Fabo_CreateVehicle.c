@@ -12,6 +12,12 @@ class Fabo_CreateVehicle
 
         CarScript vehicle = CarScript.Cast(obj);
 
+        if (!vehicle)
+        {
+            Print("VirtualGarage :: Create Vehicle Failed: " + virtualVehicle.GetType());
+            return;
+        }
+
         CreateAttachments(vehicle, virtualVehicle.GetAttachments());
 
         obj.Fill(CarFluid.FUEL, vehicle.GetFluidCapacity(CarFluid.FUEL) * virtualVehicle.GetFuel());
@@ -31,6 +37,9 @@ class Fabo_CreateVehicle
     {
         foreach(Fabo_VirtualVehicleAttachment line: attachments)
         {
+            if (!line)
+                continue;
+
             EntityAI att;
 
             if (line.GetSlot() == -1) {
@@ -40,6 +49,12 @@ class Fabo_CreateVehicle
                 att = obj.GetInventory().CreateEntityInCargoEx(line.GetType(), loc.GetIdx(), line.GetRow(), line.GetCol(), line.GetFlip());
             } else {
                 att = obj.GetInventory().CreateAttachmentEx(line.GetType(), line.GetSlot());
+            }
+
+            if (!att)
+            {
+                Print("VirtualGarage :: Create Object Failed: " + line.GetType());
+                return;
             }
 
             att.SetHealth("", "", line.GetHealth());
