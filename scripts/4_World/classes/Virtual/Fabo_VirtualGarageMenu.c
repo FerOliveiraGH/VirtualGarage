@@ -98,34 +98,36 @@ class Fabo_VirtualGarageMenu extends UIScriptedMenu
         return mainLayout;
     }
 
-    static CarScript getVehicleParking(vector position)
+    void GetVehicleParking()
 	{
+		m_VehicleParking = NULL;
 	    int radius = 3;
-		CarScript car;
 
 		array<Object> items = new array<Object>;
 		array<CargoBase> cargoBase = new array<CargoBase>;
 
-		GetGame().GetObjectsAtPosition(position, radius, items, cargoBase);
+		GetGame().GetObjectsAtPosition(m_ParkingPosition, radius, items, cargoBase);
 
-		foreach(EntityAI item: items)
+		foreach(Object item: items)
 		{
-		    if (Class.CastTo(car, item))
-		        return car;
+		    CarScript car = CarScript.Cast(item);
+		    if (car)
+		    {
+		        m_VehicleParking = car;
+		        return;
+		    }
 		}
-
-		return NULL;
 	}
 
     void GetListVehicles()
     {
         ClearList();
 
-        m_VehicleParking = getVehicleParking(m_ParkingPosition);
+        GetVehicleParking();
 
-        ChangeListWithParking(m_VehicleParking);
+        ChangeListWithParking();
 
-        ChangeParkingStatus(m_VehicleParking);
+        ChangeParkingStatus();
 
         ClearVehicleSelected();
     }
@@ -137,7 +139,7 @@ class Fabo_VirtualGarageMenu extends UIScriptedMenu
         m_VehicleSelected = -1;
     }
 
-    void ChangeListWithParking(CarScript m_VehicleParking)
+    void ChangeListWithParking()
     {
         if (m_VehicleParking)
         {
@@ -160,7 +162,7 @@ class Fabo_VirtualGarageMenu extends UIScriptedMenu
         }
     }
 
-    void ChangeParkingStatus(CarScript m_VehicleParking)
+    void ChangeParkingStatus()
     {
         if (m_VehicleParking)
         {
