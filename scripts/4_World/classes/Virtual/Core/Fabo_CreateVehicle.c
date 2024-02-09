@@ -1,5 +1,7 @@
 class Fabo_CreateVehicle
 {
+    CarScript Vehicle;
+
     void Fabo_CreateVehicle(vector position, vector orientation, int userId, int carId)
     {
         Fabo_VirtualVehicle virtualVehicle = new Fabo_VirtualVehicle( userId, carId );
@@ -19,6 +21,8 @@ class Fabo_CreateVehicle
 
         SetCarLock(vehicle, virtualVehicle);
         SetOwnerVehicle(vehicle, virtualVehicle);
+
+        Vehicle = vehicle;
 
         virtualVehicle.Delete();
     }

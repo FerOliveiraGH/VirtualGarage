@@ -45,6 +45,7 @@ class Fabo_StoreVehicleCore
         if (vehicle.GetOwnerCar() != sender.GetId())
         {
             NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_virtual_garage_title", "#STR_Action_fabo_virtual_invalid_owner", "VirtualGarage/data/images/vglogo.paa");
+            FaboLogger.GetInstance().Log("Player: " + sender.GetName() + " (" + sender.GetPlainId() + ") - Vehicle: " + vehicle.GetDisplayName() + " (" + vehicle.GetType() + ") - Action: " + "INVALID OWNER");
             return;
         }
         #endif
@@ -53,6 +54,7 @@ class Fabo_StoreVehicleCore
         if (!vehicle.IsOwned() || vehicle.GetOwnerID() != sender.GetPlainId())
         {
             NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_virtual_garage_title", "#STR_Action_fabo_virtual_invalid_owner", "VirtualGarage/data/images/vglogo.paa");
+            FaboLogger.GetInstance().Log("Player: " + sender.GetName() + " (" + sender.GetPlainId() + ") - Vehicle: " + vehicle.GetDisplayName() + " (" + vehicle.GetType() + ") - Action: " + "INVALID OWNER");
             return;
         }
         #endif
@@ -99,6 +101,8 @@ class Fabo_StoreVehicleCore
         GetRPCManager().SendRPC("VirtualGarage", "UpdateListVehicleRPC",  new Param1<int>(data.param1), true, sender);
 
         NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_virtual_garage_title", "#fabo_success_storage", "VirtualGarage/data/images/vglogo.paa");
+
+        FaboLogger.GetInstance().Log("Player: " + sender.GetName() + " (" + sender.GetPlainId() + ") - Vehicle: " + vehicle.GetDisplayName() + " (" + vehicle.GetType() + ") - Action: " + "STORE");
     }
 
     int CreateUniqueID()

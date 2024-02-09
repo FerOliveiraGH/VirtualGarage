@@ -51,11 +51,14 @@ class Fabo_DeployVehicleCore
         fabo_ListGarage.removeVehicleId(data.param4);
         fabo_ListGarage.Store();
 
-        Fabo_CreateVehicle(data.param1, data.param2, data.param3, vehicleId);
+        Fabo_CreateVehicle fabo_CreateVehicle = Fabo_CreateVehicle(data.param1, data.param2, data.param3, vehicleId);
+        CarScript vehicle = fabo_CreateVehicle.Vehicle;
 
         GetRPCManager().SendRPC("VirtualGarage", "UpdateListVehicleRPC",  new Param1<int>(data.param3), true, sender);
 
         NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_virtual_garage_title", "#fabo_success_recovered", "VirtualGarage/data/images/vglogo.paa");
+
+        FaboLogger.GetInstance().Log("Player: " + sender.GetName() + " (" + sender.GetPlainId() + ") - Vehicle: " + vehicle.GetDisplayName() + " (" + vehicle.GetType() + ") - Action: " + "DEPLOY");
     }
 
     bool IsColliding(vector position, vector orientation)

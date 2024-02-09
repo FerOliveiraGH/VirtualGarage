@@ -3,6 +3,7 @@ class ConfigVirtualGarage
     private const string Patch = "$profile:VirtualGarage\\";
     private const string File = "$profile:VirtualGarage\\settings.json";
     private string version;
+    private int logs = 1;
     private int attachDetachWithTool = 1;
     private int limit = -1;
     private int spawnInWater = 0;
@@ -16,15 +17,15 @@ class ConfigVirtualGarage
 
             if (!FileExist(File))
             {
-                version = "1.0.0";
+                version = "1.1.0";
                 Store();
             }
 
             Load();
 
-            if (version != "1.0.0")
+            if (version != "1.1.0")
             {
-                version = "1.0.0";
+                version = "1.1.0";
                 Store();
             }
         }
@@ -33,6 +34,11 @@ class ConfigVirtualGarage
     int AttachDetachWithTool()
     {
         return attachDetachWithTool;
+    }
+
+    int Logs()
+    {
+        return logs;
     }
 
     int Limit()
