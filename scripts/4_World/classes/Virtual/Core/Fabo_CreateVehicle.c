@@ -102,7 +102,9 @@ class Fabo_CreateVehicle
             }
         }
 
-        weapon.Synchronize();
+        Weapon_Base weaponBase = Weapon_Base.Cast(weapon);
+        weaponBase.RandomizeFSMState();
+        weaponBase.Synchronize();
     }
 
     void SetCarLock(CarScript vehicle, Fabo_VirtualVehicle virtualVehicle)
