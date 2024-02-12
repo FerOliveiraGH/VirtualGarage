@@ -103,4 +103,36 @@ class CfgVehicles
     class Fabo_VirtualGarage_Static: Fabo_VirtualGarage
     {
     };
+    class Paper;
+    class Fabo_InsurancePaper: Paper
+	{
+		scope=2;
+		displayName="$STR_CfgVehicles_fabo_paper_insurance";
+		descriptionShort="$STR_CfgVehicles_fabo_paper_insurance_desc";
+		isMeleeWeapon=1;
+		weight=2;
+		itemSize[]={2,2};
+		rotationFlags=16;
+		hiddenSelectionsTextures[]=
+		{
+			"VirtualGarage\data\images\insurance_paper.paa",
+			"VirtualGarage\data\images\insurance_paper.paa",
+			"VirtualGarage\data\images\insurance_paper.paa"
+		};
+        hiddenSelectionsMaterials[]=
+		{
+			"VirtualGarage\data\images\insurance_paper.rvmat"
+		};
+		attachments[]={};
+        hiddenSelections[]=
+		{
+			"zbytek"
+		};
+        hologramMaterial="";
+        hologramMaterialPath="";
+		class DamageSystem {};
+        class EnergyManager {};
+        class AnimationSources {};
+        class AnimEvents {};
+	};
 };

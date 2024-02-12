@@ -84,6 +84,7 @@ class Fabo_StoreVehicleCore
         virtualVehicle.SetFuel(vehicle.GetFluidFraction(CarFluid.FUEL));
         virtualVehicle.SetOwner(sender.GetName());
         virtualVehicle.SetOwnerCarID(sender.GetId());
+        virtualVehicle.SetInsuranceId(vehicle.GetInsuranceId());
 
         #ifdef TraderPlus
         virtualVehicle.SetPassword(vehicle.m_CarLockPassword);
@@ -95,6 +96,7 @@ class Fabo_StoreVehicleCore
         fabo_ListGarage.addVehicleId(uniqueId);
         fabo_ListGarage.Store();
 
+        vehicle.SetStoreVehicle(1);
         vehicle.Delete();
         vehicle.SetSynchDirty();
 

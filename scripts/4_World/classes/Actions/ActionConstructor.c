@@ -6,5 +6,7 @@ modded class ActionConstructor
 
         actions.Insert(Fabo_OpenMenuAction);
         actions.Insert(AttachDetachWithToolAction);
+        actions.Insert(Fabo_InsuranceActiveAction);
+        actions.Insert(Fabo_InsuranceCheckAction);
     }
 }

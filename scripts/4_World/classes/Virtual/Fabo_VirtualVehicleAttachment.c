@@ -14,7 +14,7 @@ class Fabo_VirtualVehicleAttachment
 	ref array<ref Fabo_VirtualCartridge> Cartridges = new array<ref Fabo_VirtualCartridge>;
 	ref array<ref Fabo_VirtualVehicleAttachment> Children = new array<ref Fabo_VirtualVehicleAttachment>;
 
-	void Fabo_VirtualVehicleAttachment(EntityAI attachment)
+	void Fabo_VirtualVehicleAttachment(EntityAI attachment, int onlyAttachments = 0)
 	{
 	    Type = attachment.GetType();
         Health = attachment.GetHealth();
@@ -45,6 +45,9 @@ class Fabo_VirtualVehicleAttachment
 
         EntityAI parent = loc.GetParent();
         Parent = parent.GetType();
+
+        if (onlyAttachments == 1)
+            return;
 
         array<EntityAI> children = new array<EntityAI>;
         attachment.GetInventory().EnumerateInventory(InventoryTraversalType.LEVELORDER, children);

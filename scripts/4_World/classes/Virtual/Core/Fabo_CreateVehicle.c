@@ -27,6 +27,7 @@ class Fabo_CreateVehicle
 
         SetCarLock(vehicle, virtualVehicle);
         SetOwnerVehicle(vehicle, virtualVehicle);
+        vehicle.SetInsuranceId(virtualVehicle.GetInsuranceId());
 
         Vehicle = vehicle;
 

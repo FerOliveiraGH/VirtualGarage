@@ -3,6 +3,7 @@ class Fabo_VirtualVehicle
     private const string Root = "$profile:VirtualGarage\\";
     private const string Database = "$profile:VirtualGarage\\database\\";
     private const string Path = "$profile:VirtualGarage\\database\\vehicles\\";
+    private const string PathInsurance = "$profile:VirtualGarage\\database\\insurance\\";
     private int UniqueID;
     private string Type;
     private int OwnerID;
@@ -10,32 +11,27 @@ class Fabo_VirtualVehicle
     private string Owner;
     private float Fuel;
     private int Password;
+    private int Insurance;
+    private int InsuranceId;
     private ref array<ref Fabo_VirtualVehicleAttachment> Attachments = new array<ref Fabo_VirtualVehicleAttachment>();
 
-    void Fabo_VirtualVehicle(int ownerID, int uniqueID)
+    void Fabo_VirtualVehicle(int ownerID, int uniqueID, int insurance = 0)
     {
         this.OwnerID = ownerID;
         this.UniqueID = uniqueID;
+        this.Insurance = insurance;
 
         if (!FileExist(Root))
-        {
             MakeDirectory(Root);
-        }
 
         if (!FileExist(Database))
-        {
             MakeDirectory(Database);
-        }
 
-        if (!FileExist(Path))
-        {
-            MakeDirectory(Path);
-        }
+        if (!FileExist(GetPathFile()))
+            MakeDirectory(GetPathFile());
 
-        if (!FileExist(Path + ownerID + "\\"))
-        {
-            MakeDirectory(Path + ownerID + "\\");
-        }
+        if (!FileExist(GetPathFile() + ownerID + "\\"))
+            MakeDirectory(GetPathFile() + ownerID + "\\");
     }
 
     int GetUniqueID()
@@ -73,6 +69,17 @@ class Fabo_VirtualVehicle
         return this.Password;
     }
 
+    int GetInsuranceId()
+    {
+        return this.InsuranceId;
+    }
+
+    bool HasInsuranceId()
+    {
+        string insuranceId = InsuranceId.ToString();
+        return InsuranceId > 0 && insuranceId.Length() > 1;
+    }
+
     array<ref Fabo_VirtualVehicleAttachment> GetAttachments()
     {
         return this.Attachments;
@@ -103,6 +110,16 @@ class Fabo_VirtualVehicle
         this.Password = password;
     }
 
+    void SetInsurance(int insurance)
+    {
+        this.Insurance = insurance;
+    }
+
+    void SetInsuranceId(int insuranceId)
+    {
+        this.InsuranceId = insuranceId;
+    }
+
     void SetAttachments(EntityAI entity)
     {
         array<EntityAI> attachments = new array<EntityAI>;
@@ -116,18 +133,52 @@ class Fabo_VirtualVehicle
         }
     }
 
+    void SetOnlyAttachments(EntityAI entity)
+    {
+        array<EntityAI> attachments = GetAttachments(entity);
+        foreach (EntityAI attachment: attachments)
+        {
+            if (attachment)
+            {
+                this.Attachments.Insert(new Fabo_VirtualVehicleAttachment(attachment, 1));
+            }
+        }
+    }
+
+    private array<EntityAI> GetAttachments(EntityAI entity)
+	{
+		array<EntityAI> ret = new array<EntityAI>;
+
+		for (int i = 0; i < entity.GetInventory().AttachmentCount(); ++i)
+		{
+			ret.Insert(entity.GetInventory().GetAttachmentFromIndex(i));
+		}
+
+		return ret;
+	}
+
     void Store()
     {
-        JsonFileLoader<Fabo_VirtualVehicle>.JsonSaveFile(Path + OwnerID + "\\" + this.GetUniqueID() + ".json", this);
+        JsonFileLoader<Fabo_VirtualVehicle>.JsonSaveFile(GetPathFile() + OwnerID + "\\" + this.GetUniqueID() + ".json", this);
     }
 
     void Load()
     {
-        JsonFileLoader<Fabo_VirtualVehicle>.JsonLoadFile(Path + OwnerID + "\\" + this.GetUniqueID() + ".json", this);
+        JsonFileLoader<Fabo_VirtualVehicle>.JsonLoadFile(GetPathFile() + OwnerID + "\\" + this.GetUniqueID() + ".json", this);
     }
 
     void Delete()
     {
-        DeleteFile(Path + OwnerID + "\\" + this.GetUniqueID() + ".json");
+        DeleteFile(GetPathFile() + OwnerID + "\\" + this.GetUniqueID() + ".json");
+    }
+
+    private string GetPathFile()
+    {
+        string PathFile = Path;
+
+        if (Insurance == 1)
+            PathFile = PathInsurance;
+
+        return PathFile;
     }
 }
