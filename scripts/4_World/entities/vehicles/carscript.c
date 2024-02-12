@@ -50,6 +50,9 @@ modded class CarScript extends Car
         if (GetGame().IsClient() || !HasInsuranceId() || FaboStoreVehicle == 1)
             return;
 
+        if (GetHealthLevel("") != GameConstants.STATE_RUINED)
+            return;
+
         Print("VirtualGarage :: Vehicle Has Insurance?");
 
         Fabo_VehicleInsurance vehicleInsurance = new Fabo_VehicleInsurance(FaboInsuranceCarID);
