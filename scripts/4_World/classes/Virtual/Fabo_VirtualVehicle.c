@@ -135,7 +135,7 @@ class Fabo_VirtualVehicle
 
     void SetOnlyAttachments(EntityAI entity)
     {
-        array<EntityAI> attachments = GetAttachments(entity);
+        array<EntityAI> attachments = GetOnlyVehicleAttachments(entity);
         foreach (EntityAI attachment: attachments)
         {
             if (attachment)
@@ -145,13 +145,39 @@ class Fabo_VirtualVehicle
         }
     }
 
-    private array<EntityAI> GetAttachments(EntityAI entity)
+    private array<EntityAI> GetOnlyVehicleAttachments(EntityAI entity)
 	{
 		array<EntityAI> ret = new array<EntityAI>;
 
 		for (int i = 0; i < entity.GetInventory().AttachmentCount(); ++i)
 		{
-			ret.Insert(entity.GetInventory().GetAttachmentFromIndex(i));
+            EntityAI attachment = entity.GetInventory().GetAttachmentFromIndex(i);
+
+		    bool insert = false;
+
+            if (CarWheel.Cast(attachment))
+                insert = true;
+
+            if (CarDoor.Cast(attachment))
+                insert = true;
+
+            if (CarRadiator.Cast(attachment))
+                insert = true;
+
+            if (SparkPlug.Cast(attachment))
+                insert = true;
+
+            if (GlowPlug.Cast(attachment))
+                insert = true;
+
+            if (HeadlightH7.Cast(attachment))
+                insert = true;
+
+            if (VehicleBattery.Cast(attachment))
+                insert = true;
+
+            if (insert)
+			    ret.Insert(attachment);
 		}
 
 		return ret;

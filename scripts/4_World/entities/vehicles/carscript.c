@@ -65,7 +65,7 @@ modded class CarScript extends Car
 
         Fabo_VirtualVehicle virtualVehicle = new Fabo_VirtualVehicle(vehicleInsurance.GetUserId(), FaboInsuranceCarID, 1);
         virtualVehicle.Load();
-        virtualVehicle.SetInsurance(0)
+        virtualVehicle.SetInsurance(0);
         virtualVehicle.Store();
 
         Fabo_ListGarage fabo_ListGarage = new Fabo_ListGarage(vehicleInsurance.GetUserId());
