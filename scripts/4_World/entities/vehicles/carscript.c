@@ -53,13 +53,15 @@ modded class CarScript extends Car
         if (GetHealthLevel("") != GameConstants.STATE_RUINED)
             return;
 
-        Print("VirtualGarage :: Vehicle Has Insurance?");
-
         Fabo_VehicleInsurance vehicleInsurance = new Fabo_VehicleInsurance(FaboInsuranceCarID);
         vehicleInsurance.Load();
 
+        Print("VirtualGarage :: Vehicle Has Insurance? " + vehicleInsurance.HasInsuranceId());
+
         if (!vehicleInsurance.HasInsuranceId() || vehicleInsurance.CurrentInsuranceExpired())
             return;
+
+        Print("VirtualGarage :: Vehicle Rescued: " + GetType() + " - Insurance ID: " + FaboInsuranceCarID);
 
         Fabo_VirtualVehicle virtualVehicle = new Fabo_VirtualVehicle(vehicleInsurance.GetUserId(), FaboInsuranceCarID, 1);
         virtualVehicle.Load();

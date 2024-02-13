@@ -98,6 +98,9 @@ class Fabo_VehicleInsurance
 
     bool CurrentInsuranceExpired()
     {
+        if (!Expiration)
+            return true;
+
         return GetCurrentTimeStamp() > ConvertDateToTimestamp(Expiration);
     }
 
