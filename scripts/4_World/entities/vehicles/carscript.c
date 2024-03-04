@@ -45,9 +45,7 @@ modded class CarScript extends Car
 
 	void RescueVehicleInsurance()
 	{
-	    Print("VirtualGarage :: Vehicle Deleted");
-
-        if (GetGame().IsClient() || !HasInsuranceId() || FaboStoreVehicle == 1)
+        if (!GetGame() || GetGame().IsClient() || !HasInsuranceId() || FaboStoreVehicle == 1)
             return;
 
         if (GetHealthLevel("") != GameConstants.STATE_RUINED)

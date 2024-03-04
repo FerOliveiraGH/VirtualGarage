@@ -34,23 +34,29 @@ class Fabo_CreateVehicle
         virtualVehicle.Delete();
     }
 
-    void CreateAttachments(EntityAI obj, array<ref Fabo_VirtualVehicleAttachment> attachments)
+    void CreateAttachments(EntityAI obj, array<ref Fabo_VirtualObject> attachments)
     {
-        foreach(Fabo_VirtualVehicleAttachment line: attachments)
+        foreach(Fabo_VirtualObject line: attachments)
         {
             if (!line)
                 continue;
 
             EntityAI att;
 
-            if (line.GetSlot() == -1) {
-                InventoryLocation loc = new InventoryLocation;
-                obj.GetInventory().GetCurrentInventoryLocation( loc );
-
-                att = obj.GetInventory().CreateEntityInCargoEx(line.GetType(), loc.GetIdx(), line.GetRow(), line.GetCol(), line.GetFlip());
-            } else {
+            if (line.GetSlotType() == InventoryLocationType.CARGO)
+            {
+                if (line.GetSlotIdx() == -1 || line.GetCol() == -1 || line.GetRow() == -1)
+                    att = obj.GetInventory().CreateInInventory(line.GetType());
+                else
+                    att = obj.GetInventory().CreateEntityInCargoEx(line.GetType(), line.GetSlotIdx(), line.GetRow(), line.GetCol(), line.GetFlip());
+            }
+            else if (line.GetSlotType() == InventoryLocationType.ATTACHMENT)
+            {
                 att = obj.GetInventory().CreateAttachmentEx(line.GetType(), line.GetSlot());
             }
+
+            if (!att)
+                att = obj.GetInventory().CreateInInventory(line.GetType());
 
             if (!att)
             {
@@ -87,7 +93,7 @@ class Fabo_CreateVehicle
         }
     }
 
-    void CreateWeaponCartridges(Weapon weapon, Fabo_VirtualVehicleAttachment line)
+    void CreateWeaponCartridges(Weapon weapon, Fabo_VirtualObject line)
     {
         array<ref Fabo_VirtualCartridge> cartridges = line.Cartridges;
         for (int i = 0; i < cartridges.Count(); i++)

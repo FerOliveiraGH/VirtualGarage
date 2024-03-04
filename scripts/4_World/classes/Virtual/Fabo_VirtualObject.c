@@ -1,4 +1,4 @@
-class Fabo_VirtualVehicleAttachment
+class Fabo_VirtualObject
 {
 	string Type;
 	string Parent;
@@ -7,14 +7,16 @@ class Fabo_VirtualVehicleAttachment
 	float Energy = 0.0;
 	int AmmoCount = 0;
 	int LiquidType = 0;
+	int SlotType;
+	int SlotIdx;
 	int AttSlot;
 	int AttRow;
 	int AttCol;
 	float AttFlip;
 	ref array<ref Fabo_VirtualCartridge> Cartridges = new array<ref Fabo_VirtualCartridge>;
-	ref array<ref Fabo_VirtualVehicleAttachment> Children = new array<ref Fabo_VirtualVehicleAttachment>;
+	ref array<ref Fabo_VirtualObject> Children = new array<ref Fabo_VirtualObject>;
 
-	void Fabo_VirtualVehicleAttachment(EntityAI attachment, int onlyAttachments = 0)
+	void Fabo_VirtualObject(EntityAI attachment, int onlyAttachments = 0)
 	{
 	    Type = attachment.GetType();
         Health = attachment.GetHealth();
@@ -38,6 +40,8 @@ class Fabo_VirtualVehicleAttachment
 
         InventoryLocation loc = new InventoryLocation;
         attachment.GetInventory().GetCurrentInventoryLocation( loc );
+        SlotType = loc.GetType();
+        SlotIdx = loc.GetIdx();
         AttSlot = loc.GetSlot();
         AttRow = loc.GetRow();
         AttCol = loc.GetCol();
@@ -56,7 +60,7 @@ class Fabo_VirtualVehicleAttachment
         {
             if (child)
             {
-                Children.Insert(new Fabo_VirtualVehicleAttachment(child));
+                Children.Insert(new Fabo_VirtualObject(child));
             }
         }
 	}
@@ -108,7 +112,7 @@ class Fabo_VirtualVehicleAttachment
     {
         return this.Quantity;
     }
-    
+
     float GetEnergy()
     {
         return this.Energy;
@@ -122,6 +126,16 @@ class Fabo_VirtualVehicleAttachment
     int GetLiquidType()
     {
         return this.LiquidType;
+    }
+
+    int GetSlotType()
+    {
+        return this.SlotType;
+    }
+
+    int GetSlotIdx()
+    {
+        return this.SlotIdx;
     }
 
     int GetSlot()
@@ -144,7 +158,7 @@ class Fabo_VirtualVehicleAttachment
         return this.AttFlip;
     }
 
-    array<ref Fabo_VirtualVehicleAttachment> GetChildren()
+    array<ref Fabo_VirtualObject> GetChildren()
     {
         return this.Children;
     }

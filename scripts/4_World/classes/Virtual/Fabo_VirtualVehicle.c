@@ -13,7 +13,7 @@ class Fabo_VirtualVehicle
     private int Password;
     private int Insurance;
     private int InsuranceId;
-    private ref array<ref Fabo_VirtualVehicleAttachment> Attachments = new array<ref Fabo_VirtualVehicleAttachment>();
+    private ref array<ref Fabo_VirtualObject> Attachments = new array<ref Fabo_VirtualObject>();
 
     void Fabo_VirtualVehicle(int ownerID, int uniqueID, int insurance = 0)
     {
@@ -80,7 +80,7 @@ class Fabo_VirtualVehicle
         return InsuranceId > 0 && insuranceId.Length() > 1;
     }
 
-    array<ref Fabo_VirtualVehicleAttachment> GetAttachments()
+    array<ref Fabo_VirtualObject> GetAttachments()
     {
         return this.Attachments;
     }
@@ -128,7 +128,7 @@ class Fabo_VirtualVehicle
         {
             if (attachment)
             {
-                this.Attachments.Insert(new Fabo_VirtualVehicleAttachment(attachment));
+                this.Attachments.Insert(new Fabo_VirtualObject(attachment));
             }
         }
     }
@@ -140,7 +140,7 @@ class Fabo_VirtualVehicle
         {
             if (attachment)
             {
-                this.Attachments.Insert(new Fabo_VirtualVehicleAttachment(attachment, 1));
+                this.Attachments.Insert(new Fabo_VirtualObject(attachment, 1));
             }
         }
     }

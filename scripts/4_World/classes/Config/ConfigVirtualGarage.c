@@ -1,7 +1,7 @@
 class ConfigVirtualGarage
 {
-    private const string Patch = "$profile:VirtualGarage\\";
-    private const string File = "$profile:VirtualGarage\\settings.json";
+    private const string fabo_Patch = "$profile:VirtualGarage\\";
+    private const string fabo_File = "$profile:VirtualGarage\\settings.json";
     private string version;
     private int logs = 1;
     private int attachDetachWithTool = 1;
@@ -12,10 +12,10 @@ class ConfigVirtualGarage
     {
         if (GetGame().IsServer())
         {
-            if (!FileExist(Patch))
-                MakeDirectory(Patch);
+            if (!FileExist(fabo_Patch))
+                MakeDirectory(fabo_Patch);
 
-            if (!FileExist(File))
+            if (!FileExist(fabo_File))
             {
                 version = "1.1.0";
                 Store();
@@ -53,12 +53,12 @@ class ConfigVirtualGarage
 
     private void Store()
     {
-        JsonFileLoader<ConfigVirtualGarage>.JsonSaveFile(File, this);
+        JsonFileLoader<ConfigVirtualGarage>.JsonSaveFile(fabo_File, this);
     }
 
     private void Load()
     {
-        JsonFileLoader<ConfigVirtualGarage>.JsonLoadFile(File, this);
+        JsonFileLoader<ConfigVirtualGarage>.JsonLoadFile(fabo_File, this);
     }
 
     private static ref ConfigVirtualGarage s_Instance;
