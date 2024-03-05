@@ -13,6 +13,7 @@ class Fabo_VirtualVehicle
     private int Password;
     private int Insurance;
     private int InsuranceId;
+    private vector Position;
     private ref array<ref Fabo_VirtualObject> Attachments = new array<ref Fabo_VirtualObject>();
 
     void Fabo_VirtualVehicle(int ownerID, int uniqueID, int insurance = 0)
@@ -74,6 +75,11 @@ class Fabo_VirtualVehicle
         return this.InsuranceId;
     }
 
+    vector GetPosition()
+    {
+        return this.Position;
+    }
+
     bool HasInsuranceId()
     {
         string insuranceId = InsuranceId.ToString();
@@ -118,6 +124,11 @@ class Fabo_VirtualVehicle
     void SetInsuranceId(int insuranceId)
     {
         this.InsuranceId = insuranceId;
+    }
+
+    void SetPosition(vector position)
+    {
+        this.Position = position;
     }
 
     void SetAttachments(EntityAI entity)

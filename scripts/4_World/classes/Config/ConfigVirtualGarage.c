@@ -3,10 +3,11 @@ class ConfigVirtualGarage
     private const string fabo_Patch = "$profile:VirtualGarage\\";
     private const string fabo_File = "$profile:VirtualGarage\\settings.json";
     private string version;
-    private int logs = 1;
-    private int attachDetachWithTool = 1;
+    private bool logs = true;
+    private bool attachDetachWithTool = true;
     private int limit = -1;
-    private int spawnInWater = 0;
+    private bool spawnInWater = false;
+    private bool blockedDeployByGarage = false;
 
     void ConfigVirtualGarage()
     {
@@ -17,26 +18,26 @@ class ConfigVirtualGarage
 
             if (!FileExist(fabo_File))
             {
-                version = "1.1.0";
+                version = "1.2.0";
                 Store();
             }
 
             Load();
 
-            if (version != "1.1.0")
+            if (version != "1.2.0")
             {
-                version = "1.1.0";
+                version = "1.2.0";
                 Store();
             }
         }
     }
 
-    int AttachDetachWithTool()
+    bool AttachDetachWithTool()
     {
         return attachDetachWithTool;
     }
 
-    int Logs()
+    bool Logs()
     {
         return logs;
     }
@@ -46,9 +47,14 @@ class ConfigVirtualGarage
         return limit;
     }
 
-    int SpawnInWater()
+    bool SpawnInWater()
     {
         return spawnInWater;
+    }
+
+    bool BlockedDeployByGarage()
+    {
+        return blockedDeployByGarage;
     }
 
     private void Store()
@@ -73,7 +79,7 @@ class ConfigVirtualGarage
 
     void SendRPC(PlayerIdentity identity)
     {
-        GetRPCManager().SendRPC("VirtualGarage", "LoadSettings", new Param1<int>(attachDetachWithTool), true, identity);
+        GetRPCManager().SendRPC("VirtualGarage", "LoadSettings", new Param1<bool>(attachDetachWithTool), true, identity);
     }
 
     void AddRPC()
@@ -86,7 +92,7 @@ class ConfigVirtualGarage
 		if(type != CallType.Client)
 			return;
 
-		Param1<int> data;
+		Param1<bool> data;
 		if(!ctx.Read(data))
 			return;
 

@@ -42,13 +42,31 @@ class Fabo_DeployVehicleCore
             return;
         }
 
-        if (ConfigVirtualGarage.GetInstance().SpawnInWater() == 0 && IsSurfaceWater(data.param1))
+        if (!ConfigVirtualGarage.GetInstance().SpawnInWater() && IsSurfaceWater(data.param1))
         {
             NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_virtual_garage_title", "#fabo_block_area", "VirtualGarage/data/images/vglogo.paa");
             return;
         }
 
-        Fabo_CreateVehicle fabo_CreateVehicle = Fabo_CreateVehicle(data.param1, data.param2, data.param3, vehicleId);
+        Fabo_VirtualVehicle virtualVehicle = new Fabo_VirtualVehicle(data.param3, vehicleId);
+        virtualVehicle.Load();
+
+        if (ConfigVirtualGarage.GetInstance().BlockedDeployByGarage() && virtualVehicle.GetPosition())
+        {
+            float distance = vector.Distance(virtualVehicle.GetPosition(), data.param1);
+            #ifdef FABODEBUG
+            Print("VirtualGarage :: virtualVehicle.GetPosition() " + virtualVehicle.GetPosition());
+            Print("VirtualGarage :: data.param1 " + data.param1);
+            Print("VirtualGarage :: distance " + distance);
+            #endif
+            if (distance > 3)
+            {
+                NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_virtual_garage_title", "#fabo_parking_blocked_garage", "VirtualGarage/data/images/vglogo.paa");
+                return;
+            }
+        }
+
+        Fabo_CreateVehicle fabo_CreateVehicle = Fabo_CreateVehicle(data.param1, data.param2, virtualVehicle);
         CarScript vehicle = fabo_CreateVehicle.Vehicle;
 
         if (!vehicle)

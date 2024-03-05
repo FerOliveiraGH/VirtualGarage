@@ -83,7 +83,8 @@ class Fabo_OpenMenuAction: ActionInteractBase
 
 	void SetListVehicleRPC( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
     {
-        if(!GetGame().IsClient())return;
+        if (!GetGame().IsClient())
+            return;
 
         Param1<array<string>> data;
 
@@ -92,7 +93,7 @@ class Fabo_OpenMenuAction: ActionInteractBase
 
         PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
 
-        if (player.GetIdentity().GetId() != sender.GetId())
+        if (!player)
             return;
 
         player.m_Fabo_VirtualGarageMenu.SetDataVehicle(data.param1, getObjectPosition(Pos, Dir), Ori);

@@ -8,7 +8,7 @@ class FaboLogger
 
     void FaboLogger()
     {
-        if (ConfigVirtualGarage.GetInstance().Logs() == 0)
+        if (!ConfigVirtualGarage.GetInstance().Logs())
             return;
 
         if (!FileExist(Path))
@@ -39,7 +39,7 @@ class FaboLogger
 
     void Log(string log)
     {
-        if (ConfigVirtualGarage.GetInstance().Logs() == 0)
+        if (!ConfigVirtualGarage.GetInstance().Logs())
             return;
 
         FPrintln(fileHandle, GetFullDate() + " :: " + log);

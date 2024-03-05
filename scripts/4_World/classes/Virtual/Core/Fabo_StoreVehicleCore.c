@@ -85,6 +85,7 @@ class Fabo_StoreVehicleCore
         virtualVehicle.SetOwner(sender.GetName());
         virtualVehicle.SetOwnerCarID(sender.GetId());
         virtualVehicle.SetInsuranceId(vehicle.GetInsuranceId());
+        virtualVehicle.SetPosition(vehicle.GetPosition());
 
         #ifdef TraderPlus
         virtualVehicle.SetPassword(vehicle.m_CarLockPassword);

@@ -2,11 +2,8 @@ class Fabo_CreateVehicle
 {
     CarScript Vehicle;
 
-    void Fabo_CreateVehicle(vector position, vector orientation, int userId, int carId)
+    void Fabo_CreateVehicle(vector position, vector orientation, Fabo_VirtualVehicle virtualVehicle)
     {
-        Fabo_VirtualVehicle virtualVehicle = new Fabo_VirtualVehicle( userId, carId );
-        virtualVehicle.Load();
-
         Car obj = Car.Cast(GetGame().CreateObjectEx(virtualVehicle.GetType(), position, ECE_PLACE_ON_SURFACE));
         obj.SetOrientation(orientation);
 
