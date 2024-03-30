@@ -122,6 +122,16 @@ class Fabo_CreateVehicle
         }
         vehicle.SetSynchDirty();
         #endif
+
+        #ifdef Trader
+        if (virtualVehicle.GetPassword())
+        {
+            vehicle.m_Trader_Locked = true;
+            vehicle.m_Trader_HasKey = true;
+            vehicle.m_Trader_VehicleKeyHash = virtualVehicle.GetPassword();
+        }
+        vehicle.SetSynchDirty();
+        #endif
     }
 
     void SetOwnerVehicle(CarScript vehicle, Fabo_VirtualVehicle virtualVehicle)
@@ -130,6 +140,14 @@ class Fabo_CreateVehicle
         if (virtualVehicle.GetOwnerCarID())
         {
             vehicle.SetOwnerCarServer(virtualVehicle.GetOwnerCarID(), virtualVehicle.GetOwner());
+            vehicle.SetSynchDirty();
+        }
+        #endif
+
+        #ifdef Trader
+        if (virtualVehicle.GetOwnerCarID())
+        {
+            vehicle.m_Trader_LastDriverId = virtualVehicle.GetOwnerCarID();
             vehicle.SetSynchDirty();
         }
         #endif

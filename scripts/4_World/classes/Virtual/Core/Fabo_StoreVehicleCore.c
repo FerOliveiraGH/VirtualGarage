@@ -67,6 +67,14 @@ class Fabo_StoreVehicleCore
         }
         #endif
 
+        #ifdef Trader
+        if (!vehicle.m_Trader_HasKey || vehicle.m_Trader_LastDriverId != sender.GetId())
+        {
+            NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_virtual_garage_title", "#STR_Action_fabo_virtual_invalid_owner", "VirtualGarage/data/images/vglogo.paa");
+            return;
+        }
+        #endif
+
         Fabo_ListGarage fabo_ListGarage = new Fabo_ListGarage(data.param1);
         int limit = ConfigVirtualGarage.GetInstance().Limit();
 
@@ -89,6 +97,10 @@ class Fabo_StoreVehicleCore
 
         #ifdef TraderPlus
         virtualVehicle.SetPassword(vehicle.m_CarLockPassword);
+        #endif
+
+        #ifdef Trader
+        virtualVehicle.SetPassword(vehicle.m_Trader_VehicleKeyHash);
         #endif
 
         virtualVehicle.SetAttachments(vehicle);
