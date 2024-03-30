@@ -8,6 +8,8 @@ class ConfigVirtualGarage
     private int limit = -1;
     private bool spawnInWater = false;
     private bool blockedDeployByGarage = false;
+    private bool blockedStorageWithoutOwner = true;
+    private bool blockedStorageWithoutKey = false;
 
     void ConfigVirtualGarage()
     {
@@ -18,18 +20,28 @@ class ConfigVirtualGarage
 
             if (!FileExist(fabo_File))
             {
-                version = "1.2.0";
+                version = "1.3.0";
                 Store();
             }
 
             Load();
 
-            if (version != "1.2.0")
+            if (version != "1.3.0")
             {
-                version = "1.2.0";
+                version = "1.3.0";
                 Store();
             }
         }
+    }
+
+    private static ref ConfigVirtualGarage s_Instance;
+    static ConfigVirtualGarage GetInstance()
+    {
+        if (!s_Instance) {
+            s_Instance = new ConfigVirtualGarage();
+        }
+
+        return s_Instance;
     }
 
     bool AttachDetachWithTool()
@@ -57,6 +69,16 @@ class ConfigVirtualGarage
         return blockedDeployByGarage;
     }
 
+    bool BlockedStorageWithoutOwner()
+    {
+        return blockedStorageWithoutOwner;
+    }
+
+    bool BlockedStorageWithoutKey()
+    {
+        return blockedStorageWithoutKey;
+    }
+
     private void Store()
     {
         JsonFileLoader<ConfigVirtualGarage>.JsonSaveFile(fabo_File, this);
@@ -67,19 +89,13 @@ class ConfigVirtualGarage
         JsonFileLoader<ConfigVirtualGarage>.JsonLoadFile(fabo_File, this);
     }
 
-    private static ref ConfigVirtualGarage s_Instance;
-    static ConfigVirtualGarage GetInstance()
-    {
-        if (!s_Instance) {
-            s_Instance = new ConfigVirtualGarage();
-        }
-
-        return s_Instance;
-    }
-
     void SendRPC(PlayerIdentity identity)
     {
-        GetRPCManager().SendRPC("VirtualGarage", "LoadSettings", new Param1<bool>(attachDetachWithTool), true, identity);
+        Param3<bool, bool, bool> data = new Param3
+            <bool, bool, bool>
+            (attachDetachWithTool, blockedStorageWithoutOwner, blockedStorageWithoutKey);
+
+        GetRPCManager().SendRPC("VirtualGarage", "LoadSettings", data, true, identity);
     }
 
     void AddRPC()
@@ -92,10 +108,12 @@ class ConfigVirtualGarage
 		if(type != CallType.Client)
 			return;
 
-		Param1<bool> data;
+		Param3<bool, bool, bool> data;
 		if(!ctx.Read(data))
 			return;
 
         attachDetachWithTool = data.param1;
+        blockedStorageWithoutOwner = data.param2;
+        blockedStorageWithoutKey = data.param3;
 	}
 }

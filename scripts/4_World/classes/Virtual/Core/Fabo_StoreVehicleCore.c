@@ -42,25 +42,33 @@ class Fabo_StoreVehicleCore
         }
 
         #ifdef FaboMod
-        if (vehicle.GetOwnerCar() != sender.GetId())
+        if (ConfigVirtualGarage.GetInstance().BlockedStorageWithoutOwner() && vehicle.GetOwnerCar() != sender.GetId())
         {
             NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_virtual_garage_title", "#STR_Action_fabo_virtual_invalid_owner", "VirtualGarage/data/images/vglogo.paa");
             FaboLogger.GetInstance().Log("Player: " + sender.GetName() + " (" + sender.GetPlainId() + ") - Vehicle: " + vehicle.GetDisplayName() + " (" + vehicle.GetType() + ") - Action: " + "INVALID OWNER");
             return;
         }
-        #endif
+        #else
+            #ifdef Trader
+            if (ConfigVirtualGarage.GetInstance().BlockedStorageWithoutOwner() && vehicle.m_Trader_LastDriverId != sender.GetId())
+            {
+                NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_virtual_garage_title", "#STR_Action_fabo_virtual_invalid_owner", "VirtualGarage/data/images/vglogo.paa");
+                return;
+            }
+            #endif
 
-        #ifdef ClaimVehicles_Mod
-        if (!vehicle.IsOwned() || vehicle.GetOwnerID() != sender.GetPlainId())
-        {
-            NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_virtual_garage_title", "#STR_Action_fabo_virtual_invalid_owner", "VirtualGarage/data/images/vglogo.paa");
-            FaboLogger.GetInstance().Log("Player: " + sender.GetName() + " (" + sender.GetPlainId() + ") - Vehicle: " + vehicle.GetDisplayName() + " (" + vehicle.GetType() + ") - Action: " + "INVALID OWNER");
-            return;
-        }
+            #ifdef ClaimVehicles_Mod
+            if (ConfigVirtualGarage.GetInstance().BlockedStorageWithoutOwner() && (!vehicle.IsOwned() || vehicle.GetOwnerID() != sender.GetPlainId()))
+            {
+                NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_virtual_garage_title", "#STR_Action_fabo_virtual_invalid_owner", "VirtualGarage/data/images/vglogo.paa");
+                FaboLogger.GetInstance().Log("Player: " + sender.GetName() + " (" + sender.GetPlainId() + ") - Vehicle: " + vehicle.GetDisplayName() + " (" + vehicle.GetType() + ") - Action: " + "INVALID OWNER");
+                return;
+            }
+            #endif
         #endif
 
         #ifdef TraderPlus
-        if (vehicle.m_CarLockPassword <= 0)
+        if (ConfigVirtualGarage.GetInstance().BlockedStorageWithoutKey() && vehicle.m_CarLockPassword <= 0)
         {
             NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_virtual_garage_title", "#STR_Action_fabo_virtual_invalid_owner", "VirtualGarage/data/images/vglogo.paa");
             return;
@@ -68,7 +76,7 @@ class Fabo_StoreVehicleCore
         #endif
 
         #ifdef Trader
-        if (!vehicle.m_Trader_HasKey || vehicle.m_Trader_LastDriverId != sender.GetId())
+        if (ConfigVirtualGarage.GetInstance().BlockedStorageWithoutKey() && !vehicle.m_Trader_HasKey)
         {
             NotificationSystem.SendNotificationToPlayerIdentityExtended(sender, 2, "#fabo_virtual_garage_title", "#STR_Action_fabo_virtual_invalid_owner", "VirtualGarage/data/images/vglogo.paa");
             return;
