@@ -162,7 +162,7 @@ class Fabo_CreateVehicle
         if (virtualKey.type == "TraderPlus")
         {
             vehicle.SetCarLock(true);
-            vehicle.SetCarLockOwner(virtualKey.ownerID);
+            vehicle.SetCarLockOwner(virtualVehicle.GetOwnerID());
             vehicle.SetCarLockPassword(virtualKey.keyId);
         }
         #endif

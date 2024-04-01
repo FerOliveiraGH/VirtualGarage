@@ -119,7 +119,7 @@ class Fabo_StoreVehicleCore
         #endif
 
         #ifdef TraderPlus
-        return !vehicle.m_CarLockPassword <= 0;
+        return vehicle.m_CarLockPassword <= 0;
         #endif
 
         #ifdef Trader
