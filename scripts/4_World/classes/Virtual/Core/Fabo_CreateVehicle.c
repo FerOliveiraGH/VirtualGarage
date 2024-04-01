@@ -22,8 +22,7 @@ class Fabo_CreateVehicle
         obj.Fill(CarFluid.COOLANT, vehicle.GetFluidCapacity(CarFluid.COOLANT));
         obj.Fill(CarFluid.BRAKE, vehicle.GetFluidCapacity(CarFluid.BRAKE));
 
-        SetCarLock(vehicle, virtualVehicle);
-        SetOwnerVehicle(vehicle, virtualVehicle);
+        SetVirtualKey(vehicle, virtualVehicle);
         vehicle.SetInsuranceId(virtualVehicle.GetInsuranceId());
 
         Vehicle = vehicle;
@@ -111,30 +110,7 @@ class Fabo_CreateVehicle
         weaponBase.Synchronize();
     }
 
-    void SetCarLock(CarScript vehicle, Fabo_VirtualVehicle virtualVehicle)
-    {
-        #ifdef TraderPlus
-        if (virtualVehicle.GetPassword() > 0)
-        {
-            vehicle.SetCarLockOwner(virtualVehicle.GetOwnerID());
-            vehicle.SetCarLock(true);
-            vehicle.SetCarLockPassword(virtualVehicle.GetPassword());
-        }
-        vehicle.SetSynchDirty();
-        #endif
-
-        #ifdef Trader
-        if (virtualVehicle.GetPassword())
-        {
-            vehicle.m_Trader_Locked = true;
-            vehicle.m_Trader_HasKey = true;
-            vehicle.m_Trader_VehicleKeyHash = virtualVehicle.GetPassword();
-        }
-        vehicle.SetSynchDirty();
-        #endif
-    }
-
-    void SetOwnerVehicle(CarScript vehicle, Fabo_VirtualVehicle virtualVehicle)
+    void SetVirtualKey(CarScript vehicle, Fabo_VirtualVehicle virtualVehicle)
     {
         #ifdef FaboMod
         if (virtualVehicle.GetOwnerCarID())
@@ -144,12 +120,63 @@ class Fabo_CreateVehicle
         }
         #endif
 
-        #ifdef Trader
-        if (virtualVehicle.GetOwnerCarID())
+        Fabo_VirtualVehicleKey virtualKey = virtualVehicle.GetVirtualKey();
+
+        if (!virtualKey.type)
         {
-            vehicle.m_Trader_LastDriverId = virtualVehicle.GetOwnerCarID();
-            vehicle.SetSynchDirty();
+            #ifdef TraderPlus
+            if (virtualVehicle.GetPassword() > 0)
+            {
+                vehicle.SetCarLock(true);
+                vehicle.SetCarLockOwner(virtualVehicle.GetOwnerID());
+                vehicle.SetCarLockPassword(virtualVehicle.GetPassword());
+            }
+            #endif
+
+            #ifdef Trader
+            if (virtualVehicle.GetPassword() > 0)
+            {
+                vehicle.m_Trader_Locked = true;
+                vehicle.m_Trader_HasKey = true;
+                vehicle.m_Trader_VehicleKeyHash = virtualVehicle.GetPassword();
+                vehicle.m_Trader_LastDriverId = virtualVehicle.GetOwnerCarID();
+            }
+            #endif
+
+            return;
+        }
+
+        #ifdef MuchCarKey
+        if (virtualKey.type == "MuchCarKey")
+        {
+            vehicle.m_IsCKLocked = true;
+            vehicle.m_HasCKAssigned = true;
+            vehicle.m_CarKeyId = virtualKey.keyId;
+            vehicle.m_CarScriptId = virtualKey.vehicleId;
+            vehicle.m_OriginalOwnerId = virtualKey.ownerID;
+            vehicle.m_OriginalOwnerName = virtualKey.ownerName;
         }
         #endif
+
+        #ifdef TraderPlus
+        if (virtualKey.type == "TraderPlus")
+        {
+            vehicle.SetCarLock(true);
+            vehicle.SetCarLockOwner(virtualKey.ownerID);
+            vehicle.SetCarLockPassword(virtualKey.keyId);
+        }
+        #endif
+
+        #ifdef Trader
+        if (virtualKey.type == "Trader")
+        {
+            vehicle.m_Trader_Locked = true;
+            vehicle.m_Trader_HasKey = true;
+            vehicle.m_Trader_VehicleKeyHash = virtualKey.keyId;
+            vehicle.m_Trader_LastDriverId = virtualKey.ownerID;
+        }
+        #endif
+
+        vehicle.SetSynchDirty();
     }
 }

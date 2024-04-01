@@ -14,6 +14,7 @@ class Fabo_VirtualVehicle
     private int Insurance;
     private int InsuranceId;
     private vector Position;
+    private Fabo_VirtualVehicleKey VirtualKey;
     private ref array<ref Fabo_VirtualObject> Attachments = new array<ref Fabo_VirtualObject>();
 
     void Fabo_VirtualVehicle(int ownerID, int uniqueID, int insurance = 0)
@@ -89,6 +90,16 @@ class Fabo_VirtualVehicle
     array<ref Fabo_VirtualObject> GetAttachments()
     {
         return this.Attachments;
+    }
+
+    Fabo_VirtualVehicleKey GetVirtualKey()
+    {
+        return this.VirtualKey;
+    }
+
+    void SetVirtualKey(Fabo_VirtualVehicleKey virtualKey)
+    {
+        this.VirtualKey = virtualKey;
     }
 
     void SetType(string type)
@@ -218,4 +229,13 @@ class Fabo_VirtualVehicle
 
         return PathFile;
     }
+}
+
+class Fabo_VirtualVehicleKey
+{
+    string type;
+    int vehicleId;
+    int keyId;
+    string ownerName;
+    string ownerID;
 }
