@@ -27,6 +27,9 @@ class Fabo_InsuranceActiveAction: ActionContinuousBase
 
     override bool ActionCondition(PlayerBase player, ActionTarget target, ItemBase item)
     {
+        if (GetGame().IsServer())
+            return true;
+
         if (!target)
             return false;
 
@@ -40,7 +43,7 @@ class Fabo_InsuranceActiveAction: ActionContinuousBase
         #endif
 
         #ifdef ClaimVehicles_Mod
-        if (!vehicle.IsOwned() || vehicle.GetOwnerID() != player.GetIdentity().GetPlainId())
+        if (!vehicle.IsOwned() || !vehicle.IsOwner())
              return false;
         #endif
 

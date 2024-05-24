@@ -1,5 +1,12 @@
 modded class MissionServer
 {
+    override void OnMissionStart()
+	{
+		super.OnMissionStart();
+
+        ConfigVirtualGarage.GetInstance();
+    }
+
 	override void InvokeOnConnect(PlayerBase player, PlayerIdentity identity)
 	{
 		super.InvokeOnConnect(player, identity);

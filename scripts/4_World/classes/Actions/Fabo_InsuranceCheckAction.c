@@ -25,7 +25,7 @@ class Fabo_InsuranceCheckAction: ActionInteractBase
 
     override bool ActionCondition(PlayerBase player, ActionTarget target, ItemBase item)
     {
-        if ( GetGame().IsServer() )
+        if (GetGame().IsServer())
             return true;
 
 		CarScript vehicle = CarScript.Cast(target.GetObject());
@@ -39,7 +39,7 @@ class Fabo_InsuranceCheckAction: ActionInteractBase
         #endif
 
         #ifdef ClaimVehicles_Mod
-        if (!vehicle.IsOwned() || vehicle.GetOwnerID() != player.GetIdentity().GetPlainId())
+        if (!vehicle.IsOwned() || !vehicle.IsOwner())
              return false;
         #endif
 
