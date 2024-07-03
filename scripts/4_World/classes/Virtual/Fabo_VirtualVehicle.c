@@ -1,9 +1,9 @@
 class Fabo_VirtualVehicle
 {
-    private const string Root = "$profile:VirtualGarage\\";
-    private const string Database = "$profile:VirtualGarage\\database\\";
-    private const string Path = "$profile:VirtualGarage\\database\\vehicles\\";
-    private const string PathInsurance = "$profile:VirtualGarage\\database\\insurance\\";
+    private const string VG_Root = "$profile:VirtualGarage\\";
+    private const string VG_Database = "$profile:VirtualGarage\\database\\";
+    private const string VG_Path = "$profile:VirtualGarage\\database\\vehicles\\";
+    private const string VG_PathInsurance = "$profile:VirtualGarage\\database\\insurance\\";
     private int UniqueID;
     private string Type;
     private int OwnerID;
@@ -23,11 +23,11 @@ class Fabo_VirtualVehicle
         this.UniqueID = uniqueID;
         this.Insurance = insurance;
 
-        if (!FileExist(Root))
-            MakeDirectory(Root);
+        if (!FileExist(VG_Root))
+            MakeDirectory(VG_Root);
 
-        if (!FileExist(Database))
-            MakeDirectory(Database);
+        if (!FileExist(VG_Database))
+            MakeDirectory(VG_Database);
 
         if (!FileExist(GetPathFile()))
             MakeDirectory(GetPathFile());
@@ -222,10 +222,10 @@ class Fabo_VirtualVehicle
 
     private string GetPathFile()
     {
-        string PathFile = Path;
+        string PathFile = VG_Path;
 
         if (Insurance == 1)
-            PathFile = PathInsurance;
+            PathFile = VG_PathInsurance;
 
         return PathFile;
     }
