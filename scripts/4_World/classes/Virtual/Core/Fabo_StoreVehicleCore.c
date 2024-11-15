@@ -91,14 +91,14 @@ class Fabo_StoreVehicleCore
         return !vehicle.IsOwned() || vehicle.GetOwnerID() != sender.GetPlainId();
         #endif
 
-        #ifdef MuchCarKey
-        bool ownerInvalid = vehicle.m_OriginalOwnerId != sender.GetPlainId();
-            #ifdef Trader
-            if (!vehicle.m_HasCKAssigned)
-                ownerInvalid = vehicle.m_Trader_LastDriverId != sender.GetId();
-            #endif
-        return ownerInvalid;
-        #endif
+//        #ifdef MuchCarKey
+//        bool ownerInvalid = vehicle.m_OriginalOwnerId != sender.GetPlainId();
+//        #ifdef Trader
+//        if (!vehicle.m_HasCKAssigned)
+//            ownerInvalid = vehicle.m_Trader_LastDriverId != sender.GetId();
+//        #endif
+//        return ownerInvalid;
+//        #endif
 
         #ifdef Trader
         return vehicle.m_Trader_LastDriverId != sender.GetId();
@@ -109,14 +109,14 @@ class Fabo_StoreVehicleCore
 
     bool KeyInvalid(CarScript vehicle)
     {
-        #ifdef MuchCarKey
-        bool keyInvalid = !vehicle.m_HasCKAssigned;
-            #ifdef Trader
-            if (keyInvalid)
-                keyInvalid = !vehicle.m_Trader_HasKey;
-            #endif
-        return keyInvalid;
-        #endif
+//        #ifdef MuchCarKey
+//        bool keyInvalid = !vehicle.m_HasCKAssigned;
+//            #ifdef Trader
+//            if (keyInvalid)
+//                keyInvalid = !vehicle.m_Trader_HasKey;
+//            #endif
+//        return keyInvalid;
+//        #endif
 
         #ifdef TraderPlus
         return vehicle.m_CarLockPassword <= 0;
@@ -155,16 +155,16 @@ class Fabo_StoreVehicleCore
     {
         Fabo_VirtualVehicleKey virtualKey = new Fabo_VirtualVehicleKey();
 
-        #ifdef MuchCarKey
-        if (vehicle.m_CarKeyId > 0)
-        {
-            virtualKey.type = "MuchCarKey";
-            virtualKey.vehicleId = vehicle.m_CarScriptId;
-            virtualKey.keyId = vehicle.m_CarKeyId;
-            virtualKey.ownerName = vehicle.m_OriginalOwnerName;
-            virtualKey.ownerID = vehicle.m_OriginalOwnerId;
-        }
-        #endif
+//        #ifdef MuchCarKey
+//        if (vehicle.m_CarKeyId > 0)
+//        {
+//            virtualKey.type = "MuchCarKey";
+//            virtualKey.vehicleId = vehicle.m_CarScriptId;
+//            virtualKey.keyId = vehicle.m_CarKeyId;
+//            virtualKey.ownerName = vehicle.m_OriginalOwnerName;
+//            virtualKey.ownerID = vehicle.m_OriginalOwnerId;
+//        }
+//        #endif
 
         #ifdef TraderPlus
         if (!virtualKey.type && vehicle.m_CarLockPassword > 0)

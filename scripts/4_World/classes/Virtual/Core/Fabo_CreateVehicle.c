@@ -149,12 +149,12 @@ class Fabo_CreateVehicle
         #ifdef MuchCarKey
         if (virtualKey.type == "MuchCarKey")
         {
-            vehicle.m_IsCKLocked = true;
-            vehicle.m_HasCKAssigned = true;
-            vehicle.m_CarKeyId = virtualKey.keyId;
-            vehicle.m_CarScriptId = virtualKey.vehicleId;
-            vehicle.m_OriginalOwnerId = virtualKey.ownerID;
-            vehicle.m_OriginalOwnerName = virtualKey.ownerName;
+            vehicle.m_IsCKLocked = false;
+            vehicle.m_HasCKAssigned = false;
+//            vehicle.m_CarKeyId = virtualKey.keyId;
+//            vehicle.m_CarScriptId = virtualKey.vehicleId;
+//            vehicle.m_OriginalOwnerId = virtualKey.ownerID;
+//            vehicle.m_OriginalOwnerName = virtualKey.ownerName;
         }
         #endif
 
