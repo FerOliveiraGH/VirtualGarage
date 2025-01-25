@@ -114,7 +114,12 @@ class Fabo_OpenMenuAction: ActionInteractBase
 
     vector getObjectPosition(vector pos, vector dir)
     {
-        float meters = -4;
+        int distance = ConfigVirtualGarage.GetInstance().DistanceDeploy();
+        #ifdef FABODEBUG
+        Print("VirtualGarage :: getObjectPosition.distance " + distance);
+        #endif
+        
+        float meters = -distance;
 
         vector objectPosition = pos + dir * meters;
 //        objectPosition[1] = GetGame().SurfaceY(objectPosition[0],objectPosition[2]);

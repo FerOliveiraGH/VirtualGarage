@@ -10,6 +10,7 @@ class ConfigVirtualGarage
     private bool blockedDeployByGarage = false;
     private bool blockedStorageWithoutOwner = true;
     private bool blockedStorageWithoutKey = false;
+    private int distanceDeploy = 4;
 
     void ConfigVirtualGarage()
     {
@@ -20,15 +21,15 @@ class ConfigVirtualGarage
 
             if (!FileExist(fabo_File))
             {
-                version = "1.3.0";
+                version = "1.4.0";
                 Store();
             }
 
             Load();
 
-            if (version != "1.3.0")
+            if (version != "1.4.0")
             {
-                version = "1.3.0";
+                version = "1.4.0";
                 Store();
             }
         }
@@ -78,6 +79,11 @@ class ConfigVirtualGarage
     {
         return blockedStorageWithoutKey;
     }
+    
+    int DistanceDeploy()
+    {
+        return distanceDeploy;
+    }
 
     private void Store()
     {
@@ -91,9 +97,9 @@ class ConfigVirtualGarage
 
     void SendRPC(PlayerIdentity identity)
     {
-        Param3<bool, bool, bool> data = new Param3
-            <bool, bool, bool>
-            (attachDetachWithTool, blockedStorageWithoutOwner, blockedStorageWithoutKey);
+        Param4<bool, bool, bool, int> data = new Param4
+            <bool, bool, bool, int>
+            (attachDetachWithTool, blockedStorageWithoutOwner, blockedStorageWithoutKey, distanceDeploy);
 
         GetRPCManager().SendRPC("VirtualGarage", "LoadSettings", data, true, identity);
     }
@@ -108,12 +114,13 @@ class ConfigVirtualGarage
 		if(type != CallType.Client)
 			return;
 
-		Param3<bool, bool, bool> data;
+		Param4<bool, bool, bool, int> data;
 		if(!ctx.Read(data))
 			return;
 
         attachDetachWithTool = data.param1;
         blockedStorageWithoutOwner = data.param2;
         blockedStorageWithoutKey = data.param3;
+        distanceDeploy = data.param4;
 	}
 }
